@@ -117,21 +117,21 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
-* Thanks to marchkarcz for improving leave messages for mobile.
+Be the first and submit a pull request!
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/sunset-developer/GrooveBot.svg?style=flat-square
-[contributors-url]: https://github.com/sunset-developer/GrooveBot/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/sunset-developer/GrooveBot.svg?style=flat-square
-[forks-url]: https://github.com/sunset-developer/GrooveBot/network/members
-[stars-shield]: https://img.shields.io/github/stars/sunset-developer/GrooveBot.svg?style=flat-square
-[stars-url]: https://github.com/sunset-developer/GrooveBot/stargazers
-[issues-shield]: https://img.shields.io/github/issues/sunset-developer/GrooveBot.svg?style=flat-square
-[issues-url]: https://github.com/sunset-developer/GrooveBot/issues
-[license-shield]: https://img.shields.io/github/license/sunset-developer/GrooveBot.svg?style=flat-square
-[license-url]: https://github.com/sunset-developer/GrooveBot/blob/master/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/sunset-developer/ulibsync.svg?style=flat-square
+[contributors-url]: https://github.com/sunset-developer/ulibsync/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/sunset-developer/ulibsync.svg?style=flat-square
+[forks-url]: https://github.com/sunset-developer/ulibsync/network/members
+[stars-shield]: https://img.shields.io/github/stars/sunset-developer/ulibsync.svg?style=flat-square
+[stars-url]: https://github.com/sunset-developer/ulibsync/stargazers
+[issues-shield]: https://img.shields.io/github/issues/sunset-developer/ulibsync.svg?style=flat-square
+[issues-url]: https://github.com/sunset-developer/ulibsync/issues
+[license-shield]: https://img.shields.io/github/license/sunset-developer/ulibsync.svg?style=flat-square
+[license-url]: https://github.com/sunset-developer/ulibsync/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/github_username
 [product-screenshot]: images/screenshot.png
