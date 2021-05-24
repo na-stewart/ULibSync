@@ -12,3 +12,11 @@ end
 local syncBans = ulx.command("ULibSync", "ulx syncusers", ulx.syncUsers, "!syncusers")
 syncBans:defaultAccess(ULib.ACCESS_ADMIN)
 syncBans:help("Syncs all local users to the ULibSync database.")
+
+
+function ulx.syncGroups(calling_ply)
+    ULibSync.syncULibGroups()
+end
+local syncBans = ulx.command("ULibSync", "ulx syncgroups", ulx.syncGroups, "!syncgroups")
+syncBans:defaultAccess(ULib.ACCESS_ADMIN)
+syncBans:help("Syncs all local groups to the ULibSync database.")

@@ -11,9 +11,6 @@ local function createULibSyncBanDataTable()
     '`date_created` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),' ..
     '`date_updated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)' ..
     ');')
-    function q:onSuccess(data)
-        ULibSync.log('Table created successfully if non existant.', 'bans', 20)
-    end  
     function q:onError(err)
         ULibSync.log('Table creation failed.', 'bans', 50, err)
     end

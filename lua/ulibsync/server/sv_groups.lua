@@ -13,13 +13,9 @@ local function createULibSyncGroupsTable()
     '`date_created` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),' ..
     '`date_updated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)' ..
     ');')
-    function q:onSuccess(data)
-        ULibSync.log('Table created successfully if non existant.', 'groups', 20)
-    end
     function q:onError(err)
         ULibSync.log('Table creation failed.', 'groups', 50, err)
     end
-
     q:start()
 end
 
@@ -54,12 +50,45 @@ end
 function ULibSync.initGroupsSync()
     createULibSyncGroupsTable()
     addULibSyncGroupsHooks()
+    ULibSync.syncULibSyncGroups()
+end
+
+
+function ULibSync.syncULibGroups()
+    for groupName, groupData in pairs(ULib.ucl.groups) do
+        ULibSync.syncULibGroup(groupName, groupData)
+    end
+end
+
+function ULibSync.syncULibSyncGroups()
+    local q = ULibSync.mysql:prepare('SELECT name, inherit_from, allow, removed, can_target FROM ulib_groups')
+    function q:onSuccess(data)   
+        removeULibSyncGroupsHooks()
+        for index, uLibSyncGroupData in data do
+            local allow = ULib.parseKeyValues(data.allow)
+            if uLibSyncGroupData.removed == 1 then
+                if ULib.ucl.groups[uLibSyncGroupData.name] then
+                    ULib.ucl.removeGroup(uLibSyncGroupData.name)
+                end
+            else
+                if not ULib.ucl.groups[uLibSyncGroupData.name]
+                    ULib.ucl.addGroup(data.name, data['inherit_from'], allow)
+                    ULib.ucl.setGroupCanTarget(data.name, data['can_target'])
+                end
+            end
+        end
+        addULibSyncGroupsHooks()
+    end
+    function q:onError(err)
+        ULibSync.log('Groups have not been synced locally.', steamid, 20, err)
+    end
+    q:start()
 end
 
 function ULibSync.syncULibGroupChanged(groupName, dataName, newData)
     --Documentation for this is mandatory.
     local q = ULibSync.mysql:prepare(string.format('UPDATE ulib_groups SET %s = ? WHERE name = ?', dataName))
-    if newData then q:setString(1, newData) else q:setNull(1) end
+    if newData then q:setString(1, newData) end
     q:setString(2, groupName)
     function q:onSuccess(data)
         ULibSync.log(string.format('Group %s has been synced successfully.', dataName), groupName, 20)
@@ -92,7 +121,7 @@ function ULibSync.syncULibGroup(groupName, groupData)
         ULibSync.log('Group has been synced successfully', groupName, 20)
     end
     function q:onError(err)
-        ULibSync.log('Group has not been synced. ' .. err, groupName, 40)
+        ULibSync.log('Group has not been synced.', groupName, 40, err)
     end
     q:start()
 end
