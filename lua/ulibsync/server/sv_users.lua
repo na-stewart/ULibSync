@@ -9,7 +9,7 @@ local function createULibSyncUsersTable()
     ');')
 
     function q:onError(err)
-        ULibSync.log('Users table creation failed.' .. err, 50)
+        ULibSync.log('Table creation failed. ' .. err, 'users', 50)
     end
     q:start()
 end
@@ -42,10 +42,10 @@ function ULibSync.syncULibUser(steamid, group)
     q:setString(1, steamid)
     q:setString(2, group)
     function q:onSuccess( data )
-        ULibSync.log(string.format('User (%s) has been synced successfully.', steamid), 20)
+        ULibSync.log('User has been synced successfully.', steamid, 20)
     end
     function q:onError(err)
-        ULibSync.log(string.format('User (%s) has not been synced. %s', steamid, err), 40)
+        ULibSync.log('User has not been synced. ' .. err, steamid, 40)
     end
     q:start()
    
@@ -56,10 +56,10 @@ function ULibSync.syncULibUserRemoved(steamid)
     q:setBoolean(1, true)
     q:setString(2, steamid)
     function q:onSuccess( data )
-        ULibSync.log(string.format('User (%s) removal has been synced successfully.', steamid), 20)
+        ULibSync.log('User removal has been synced successfully.', steamid, 20)
     end
     function q:onError(err)
-        ULibSync.log(string.format('User (%s) has not been synced. $s', steamid, err), 40)
+        ULibSync.log('User removal has not been synced. ' .. err, steamid, 40)
     end
     q:start()
 end
@@ -68,12 +68,12 @@ local function syncULibSyncUsersLocally(steamid, uLibSyncUser)
     if uLibSyncUser['removed'] == 0 then
         if not ULib.ucl.users[steamid] or ULib.ucl.users[steamid]['group'] != uLibSyncUser['group'] then
             ULib.ucl.addUser(steamid, nil, nil, uLibSyncUser['group'], nil)
-            ULibSync.log(string.format('User (%s) has been synced locally', steamid), 20)       
+            ULibSync.log('User has been synced locally.', steamid, 20)       
         end
     else
         if ULib.ucl.users[steamid] then
             ULib.ucl.removeUser(steamid)
-            ULibSync.log(string.format('User (%s) removal has been synced locally', steamid), 20)       
+            ULibSync.log('User removal has been synced locally. ' .. err, steamid , 20)       
         end
     end       
 end
@@ -91,8 +91,8 @@ function ULibSync.syncULibSyncUser(steamID64)
         end
     end
     function q:onError(err)
-        ULibSync.log(string.format('User (%s) has not been synced locally. $s', steamid, err), 40)
+        ULibSync.log('User has not been synced locally. ' .. err, steamid, 40)
     end
-    q:start()
+     q:start()
 end
 hook.Add('CheckPassword', 'ULibSyncUserGroupChange', ULibSync.syncULibSyncUser)

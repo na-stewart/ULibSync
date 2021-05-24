@@ -16,7 +16,7 @@ local function parse_log_level(level)
     return levelStr
 end
 
-function ULibSync.log(data, level)
-    local formatted_log_msg = string.format('[ULibSync] %s: %s', parse_log_level(level), data)
+function ULibSync.log(data, id, level)
+    local formatted_log_msg = string.format('[ULibSync] (%s) %s: %s', id, parse_log_level(level), data)
     print(formatted_log_msg)
 end

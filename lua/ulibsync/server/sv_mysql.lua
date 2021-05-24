@@ -10,11 +10,11 @@ local function initMySQLOO()
 
     function ULibSync.mysql:onConnected() 
         initULibSync()
-        ULibSync.log('Connection to database succeeded.', 20)
+        ULibSync.log('Connection to database succeeded.', ULibSync.ip, 20)
     end
 
-    function ULibSync.mysql:onConnectionFailed( db, err )
-        ULibSync.log('Connection to database failed.' , 50)
+    function ULibSync.mysql:onConnectionFailed(err)
+        ULibSync.log('Connection to database failed. ' .. err, ULibSync.ip, 50)
     end
     
     ULibSync.mysql:connect()
