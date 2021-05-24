@@ -16,7 +16,12 @@ local function parse_log_level(level)
     return levelStr
 end
 
-function ULibSync.log(data, id, level)
-    local formatted_log_msg = string.format('[ULibSync] (%s) %s: %s', id, parse_log_level(level), data)
+function ULibSync.log(data, id, level, err)
+    logLevel = parse_log_level(level)
+    if level < 30 then
+        formatted_log_msg = string.format('[ULibSync] (%s) %s: %s', id, logLevel, data)
+    else
+        formatted_log_msg = string.format('[ULibSync] (%s) %s: %s %s', id, logLevel, data, err)
+    end
     print(formatted_log_msg)
 end

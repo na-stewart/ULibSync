@@ -2,7 +2,7 @@ local function createULibSyncBanDataTable()
     local q = ULibSync.mysql:query('CREATE TABLE IF NOT EXISTS `ulib_bans` (' ..
     '`id` INT AUTO_INCREMENT PRIMARY KEY,' ..
     '`steamid` VARCHAR(18) UNIQUE NOT NULL,' ..
-    '`reason` TEXT,' ..
+    '`reason` TINYTEXT,' ..
     '`unban` VARCHAR(12) UNIQUE NOT NULL,' ..
     '`manual_unban` BOOLEAN NOT NULL DEFAULT FALSE,' ..
     '`username` VARCHAR(32),' ..
@@ -11,9 +11,11 @@ local function createULibSyncBanDataTable()
     '`date_created` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),' ..
     '`date_updated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)' ..
     ');')
-
+    function q:onSuccess(data)
+        ULibSync.log('Table created successfully if non existant.', 'bans', 20)
+    end  
     function q:onError(err)
-        ULibSync.log('Table creation failed. ' .. err, 'bans', 50)
+        ULibSync.log('Table creation failed.', 'bans', 50, err)
     end
     q:start()
 end
@@ -47,11 +49,11 @@ function ULibSync.syncULibPlayerBan(steamid, banData, replace)
     if banData.reason then q:setString(2, banData.reason) end
     if banData.admin then q:setString(6, banData.admin) end
     if banData.name  then q:setString(4, banData.name) end
-    function q:onSuccess( data )
+    function q:onSuccess(data)
         ULibSync.log('Ban has been synced successfully', steamid, 20)
     end
     function q:onError(err)
-        ULibSync.log('Ban has not been synced. ' .. err, steamid, 40)
+        ULibSync.log('Ban has not been synced.', steamid, 40, err)
     end
     q:start()
 end
@@ -60,11 +62,11 @@ function ULibSync.syncULibPlayerUnban(steamid)
     local q = ULibSync.mysql:prepare('UPDATE ulib_bans SET manual_unban = ? WHERE steamid = ?')
     q:setBoolean(1, true)
     q:setString(2, steamid)
-    function q:onSuccess( data )
+    function q:onSuccess(data)
         ULibSync.log('UnBan has been synced successfully.', steamid, 20)
     end
     function q:onError(err)
-        ULibSync.log('UnBan has not been synced. ' .. err, steamid, 40)
+        ULibSync.log('UnBan has not been synced.', steamid, 40, err)
     end
     q:start()
 end
@@ -102,7 +104,7 @@ function ULibSync.syncULibSyncPlayerBanData(steamID64)
         end
     end
     function q:onError(err)
-        ULibSync.log('Ban has not been synced locally. ' .. err, steamid, 20)
+        ULibSync.log('Ban has not been synced locally.', steamid, 20, err)
     end
     q:start()
     q:wait(true)

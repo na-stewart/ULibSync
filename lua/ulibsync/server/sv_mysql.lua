@@ -3,6 +3,7 @@ require( 'mysqloo' )
 local function initULibSync()
     ULibSync.initBanSync()
     ULibSync.initUserSync()
+    ULibSync.initGroupsSync()
 end
 
 local function initMySQLOO()
@@ -14,7 +15,7 @@ local function initMySQLOO()
     end
 
     function ULibSync.mysql:onConnectionFailed(err)
-        ULibSync.log('Connection to database failed. ' .. err, ULibSync.ip, 50)
+        ULibSync.log('Connection to database failed.', ULibSync.ip, 50, err)
     end
     
     ULibSync.mysql:connect()

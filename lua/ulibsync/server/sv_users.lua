@@ -3,13 +3,15 @@ local function createULibSyncUsersTable()
     '`id` INT AUTO_INCREMENT PRIMARY KEY,' ..
     '`steamid` VARCHAR(18) UNIQUE NOT NULL,' ..
     '`removed` BOOLEAN NOT NULL DEFAULT FALSE,' ..
-    '`group` TINYTEXT,' ..
+    '`group` VARCHAR(255),' ..
     '`date_created` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),' ..
     '`date_updated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)' ..
     ');')
-
+    function q:onSuccess(data)
+        ULibSync.log('Table created successfully if non existant.', 'users', 20)
+    end
     function q:onError(err)
-        ULibSync.log('Table creation failed. ' .. err, 'users', 50)
+        ULibSync.log('Table creation failed.', 'users', 50, err)
     end
     q:start()
 end
@@ -41,11 +43,11 @@ function ULibSync.syncULibUser(steamid, group)
     local q = ULibSync.mysql:prepare('REPLACE INTO ulib_users (`steamid`, `group`) VALUES (?, ?)')
     q:setString(1, steamid)
     q:setString(2, group)
-    function q:onSuccess( data )
+    function q:onSuccess(data)
         ULibSync.log('User has been synced successfully.', steamid, 20)
     end
     function q:onError(err)
-        ULibSync.log('User has not been synced. ' .. err, steamid, 40)
+        ULibSync.log('User has not been synced.', steamid, 40, err)
     end
     q:start()
    
@@ -55,11 +57,11 @@ function ULibSync.syncULibUserRemoved(steamid)
     local q = ULibSync.mysql:prepare('UPDATE ulib_users SET removed = ? WHERE steamid = ?')
     q:setBoolean(1, true)
     q:setString(2, steamid)
-    function q:onSuccess( data )
+    function q:onSuccess(data)
         ULibSync.log('User removal has been synced successfully.', steamid, 20)
     end
     function q:onError(err)
-        ULibSync.log('User removal has not been synced. ' .. err, steamid, 40)
+        ULibSync.log('User removal has not been synced.', steamid, 40, err)
     end
     q:start()
 end
@@ -73,7 +75,7 @@ local function syncULibSyncUsersLocally(steamid, uLibSyncUser)
     else
         if ULib.ucl.users[steamid] then
             ULib.ucl.removeUser(steamid)
-            ULibSync.log('User removal has been synced locally. ' .. err, steamid , 20)       
+            ULibSync.log('User removal has been synced locally.', steamid, 20, err)       
         end
     end       
 end
@@ -91,7 +93,7 @@ function ULibSync.syncULibSyncUser(steamID64)
         end
     end
     function q:onError(err)
-        ULibSync.log('User has not been synced locally. ' .. err, steamid, 40)
+        ULibSync.log('User has not been synced locally.', steamid, 40, err)
     end
      q:start()
 end
