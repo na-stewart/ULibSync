@@ -43,7 +43,7 @@ end
 function ULibSync.initGroupsSync()
     createULibSyncGroupsTable()
     addULibSyncGroupsHooks()
-    ULibSync.syncULibSyncGroups()
+    if ULibSync.syncGroupsOnInit then ULibSync.syncULibSyncGroups() end
 end
 
 function ULibSync.syncULibGroups()
@@ -108,8 +108,15 @@ function ULibSync.syncULibGroupChanged(groupName, dataName, newData)
     q:start()
 end
 
+function ULibSync.convertToULibGroup(uLibSyncGroup)
+    local name = uLibSyncGroup['old_name']
+    if not ULib.ucl.groups[name] then
+        name = uLibSyncGroup.name
+    end
+    return name, ULib.ucl.groups[name]
+end
+
 local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLibSyncGroupAllow, uLibSyncGroupData)
-    -- Find changes, not just missing values. oof
     if uLibGroupData['inherit_from'] != uLibSyncGroupData['inherit_from'] then
         ULib.ucl.setGroupInheritance(uLibGroupName, uLibSyncGroupData['inherit_from'])
         ULibSync.log('Group inherit_from has been synced locally.', uLibSyncGroupData.name, 20)     
@@ -127,14 +134,6 @@ local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLi
         ULib.ucl.renameGroup(uLibGroupName, uLibSyncGroupData.name)
         ULibSync.log('Group rename has been synced locally.', uLibSyncGroupData.name, 20)    
     end
-end
-
-function ULibSync.convertToULibGroup(uLibSyncGroup)
-    local name = uLibSyncGroup['old_name']
-    if not ULib.ucl.groups[name] then
-        name = uLibSyncGroup.name
-    end
-    return name, ULib.ucl.groups[name]
 end
 
 local function syncULibSyncGroupLocally(uLibSyncGroupData)
