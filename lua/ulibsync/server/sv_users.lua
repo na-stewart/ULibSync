@@ -3,7 +3,7 @@ local function createULibSyncUsersTable()
     '`id` INT AUTO_INCREMENT PRIMARY KEY,' ..
     '`steamid` VARCHAR(18) UNIQUE NOT NULL,' ..
     '`removed` BOOLEAN NOT NULL DEFAULT FALSE,' ..
-    '`group` VARCHAR(255),' ..
+    '`group` VARCHAR(20),' ..
     '`date_created` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),' ..
     '`date_updated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)' ..
     ');')
