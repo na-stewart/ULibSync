@@ -1,82 +1,33 @@
-function ULibSync.printTable(node)
-    -- Used for debugging.
-    local function tab(amt)
-        local str = ""
-        for i=1,amt do
-            str = str .. "\t"
-        end
-        return str
-    end
- 
-    local cache, stack, output = {},{},{}
-    local depth = 1
-    local output_str = "{\n"
- 
-    while true do
-        local size = 0
-        for k,v in pairs(node) do
-            size = size + 1
-        end
- 
-        local cur_index = 1
-        for k,v in pairs(node) do
-            if (cache[node] == nil) or (cur_index >= cache[node]) then
-               
-                if (string.find(output_str,"}",output_str:len())) then
-                    output_str = output_str .. ",\n"
-                elseif not (string.find(output_str,"\n",output_str:len())) then
-                    output_str = output_str .. "\n"
-                end
- 
-                -- This is necessary for working with HUGE tables otherwise we run out of memory using concat on huge strings
-                table.insert(output,output_str)
-                output_str = ""
-               
-                local key
-                if (type(k) == "number" or type(k) == "boolean") then
-                    key = "["..tostring(k).."]"
-                else
-                    key = "['"..tostring(k).."']"
-                end
- 
-                if (type(v) == "number" or type(v) == "boolean") then
-                    output_str = output_str .. tab(depth) .. key .. " = "..tostring(v)
-                elseif (type(v) == "table") then
-                    output_str = output_str .. tab(depth) .. key .. " = {\n"
-                    table.insert(stack,node)
-                    table.insert(stack,v)
-                    cache[node] = cur_index+1
-                    break
-                else
-                    output_str = output_str .. tab(depth) .. key .. " = '"..tostring(v).."'"
-                end
- 
-                if (cur_index == size) then
-                    output_str = output_str .. "\n" .. tab(depth-1) .. "}"
-                else
-                    output_str = output_str .. ","
-                end
-            else
-                -- close the table
-                if (cur_index == size) then
-                    output_str = output_str .. "\n" .. tab(depth-1) .. "}"
-                end
-            end
- 
-            cur_index = cur_index + 1
-        end
- 
-        if (#stack > 0) then
-            node = stack[#stack]
-            stack[#stack] = nil
-            depth = cache[node] == nil and depth + 1 or depth - 1
-        else
-            break
-        end
-    end
- 
-    -- This is necessary for working with HUGE tables otherwise we run out of memory using concat on huge strings
-    table.insert(output,output_str)
-    output_str = table.concat(output)
-    print(output_str)
+function ULibSync.tableIsEmpty(t)
+    return next(t) == nil
 end
+
+function ULibSync.getMissingTableValues(tableWithValues, tablePotentiallyMissingValues)
+    local missingValues = {}
+    for key, value in pairs(tableWithValues) do
+        if not tablePotentiallyMissingValues[key] then
+            missingValues[key] = value
+        end
+    end
+    return missingValues
+end
+
+function ULibSync.areTablesEqual(t1, t2, ignore_mt)
+    local ty1 = type(t1)
+    local ty2 = type(t2)
+    if ty1 ~= ty2 then return false end
+    -- non-table types can be directly compared
+    if ty1 ~= 'table' and ty2 ~= 'table' then return t1 == t2 end
+    -- as well as tables which have the metamethod __eq
+    local mt = getmetatable(t1)
+    if not ignore_mt and mt and mt.__eq then return t1 == t2 end
+    for k1,v1 in pairs(t1) do
+       local v2 = t2[k1]
+       if v2 == nil or not ULibSync.areTablesEqual(v1,v2) then return false end
+    end
+    for k2,v2 in pairs(t2) do
+       local v1 = t1[k2]
+       if v1 == nil or not ULibSync.areTablesEqual(v1,v2) then return false end
+    end
+    return true
+ end
