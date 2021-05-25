@@ -1,3 +1,5 @@
+ULibSync.syncGroupsOnInit = true
+
 --MySQL Settings
 --You will need MySQLOO for this.
 ULibSync.ip = "example.com"
