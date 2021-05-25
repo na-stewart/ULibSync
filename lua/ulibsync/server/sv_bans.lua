@@ -33,7 +33,7 @@ function ULibSync.initBanSync()
 end
 
 function ULibSync.syncULibPlayerBanData()
-    for steamid, banData in pairs(ULibSync.getULibBanData()) do
+    for steamid, banData in pairs(ULib.bans) do
         ULibSync.syncULibPlayerBan(steamid, banData, replace)
     end
 end

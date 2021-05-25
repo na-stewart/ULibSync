@@ -54,7 +54,6 @@ end
 
 function ULibSync.syncULibGroup(groupName, groupData)
     local q = ULibSync.mysql:prepare('REPLACE INTO ulib_groups (`name`, `allow`, `inherit_from`, `can_target`) VALUES (?, ?, ?, ?)')
-    PrintTable(groupData)
     q:setString(1, groupName)
     if groupData.allow then q:setString(2, ULib.makeKeyValues(groupData.allow)) end
     if groupData['inherit_from'] then q:setString(3, groupData['inherit_from']) end
@@ -118,7 +117,7 @@ function ULibSync.convertToULibGroup(uLibSyncGroup)
 end
 
 
-local function syncULibGroupChangedLocally(uLibGroupName, uLibGroupData,uLibSyncGroupAllow, uLibSyncGroupData)
+local function syncULibGroupChangesLocally(uLibGroupName, uLibGroupData,uLibSyncGroupAllow, uLibSyncGroupData)
     local permissionsBeingAdded = ULibSync.getMissingTableValues(uLibSyncGroupAllow, uLibGroupData.allow)
     local permissionsBeingRemoved = ULibSync.getMissingTableValues(uLibGroupData.allow, uLibSyncGroupAllow)
     if uLibGroupData['inherit_from'] != uLibSyncGroupData['inherit_from'] then
@@ -157,7 +156,7 @@ local function syncULibSyncGroupLocally(uLibSyncGroupData)
             ULib.ucl.setGroupCanTarget(uLibGroupName, uLibSyncGroupData['can_target'])
             ULibSync.log('Group has been synced locally.', uLibSyncGroupData.name, 20)     
         else 
-           syncULibGroupChangedLocally(uLibGroupName, uLibGroupData, uLibSyncGroupAllow, uLibSyncGroupData)
+           syncULibGroupChangesLocally(uLibGroupName, uLibGroupData, uLibSyncGroupAllow, uLibSyncGroupData)
         end
     end
 end
