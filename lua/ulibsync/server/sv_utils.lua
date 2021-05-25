@@ -1,17 +1,3 @@
-function ULibSync.tableIsEmpty(t)
-    return next(t) == nil
-end
-
-function ULibSync.getMissingTableValues(tableWithValues, tablePotentiallyMissingValues)
-    local missingValues = {}
-    for key, value in pairs(tableWithValues) do
-        if not tablePotentiallyMissingValues[key] then
-            missingValues[key] = value
-        end
-    end
-    return missingValues
-end
-
 function ULibSync.areTablesEqual(t1, t2, ignore_mt)
     local ty1 = type(t1)
     local ty2 = type(t2)
@@ -31,3 +17,4 @@ function ULibSync.areTablesEqual(t1, t2, ignore_mt)
     end
     return true
  end
+ 

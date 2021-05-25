@@ -47,7 +47,6 @@ function ULibSync.syncULibUser(steamid, group)
         ULibSync.log('User has not been synced.', steamid, 40, err)
     end
     q:start()
-   
 end
 
 function ULibSync.syncULibUserRemoved(steamid)
