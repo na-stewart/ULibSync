@@ -64,7 +64,7 @@
 
 ULibSync is a Garry's Mod addon that effectively syncs bans, users, and groups in real time.
 
-Never worry about losing work or having to copy and paste ULib data again and rest easy knowing that banned users stay banned.
+Develop your community stress free and rest easy knowing that banned users stay banned.
 
 Designed with simplicity in mind so you can focus on what matters most, providing the best experience for your community.
 
