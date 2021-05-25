@@ -81,9 +81,7 @@ local function syncULibSyncPlayerBanDataLocally(steamid, uLibSyncPlayerBanData)
             ULibSync.log('UnBan has been synced locally.', steamid, 20)       
         end  
     elseif uLibSyncTimeRemaining > 0 or uLibSyncPlayerBanData.unban == '0' then
-        local uLibPlayerBanData = ULib.bans[steamid]
-        local uLibTimeRemaining = timeRemaining(uLibPlayerBanData.unban)
-        if not uLibPlayerBanData or uLibPlayerBanData.reason != uLibSyncPlayerBanData.reason or uLibSyncTimeRemaining != uLibTimeRemaining then
+        if not ULib.bans[steamid] or ULib.bans[steamid].reason != uLibSyncPlayerBanData.reason or uLibSyncTimeRemaining != timeRemaining(ULib.bans[steamid].unban) then
             ULib.addBan(steamid, uLibSyncTimeRemaining, uLibSyncPlayerBanData.reason, uLibSyncPlayerBanData.username)
             ULibSync.log('Ban has been synced locally.', steamid, 20)     
         end
