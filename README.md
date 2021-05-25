@@ -89,14 +89,6 @@ https://github.com/sunset-developer/ulibsync
 * Install addon from the steam workshop.
 
 (Coming soon)
-  
- ## Commands
- 
- ULibSync comes with commands that makes it easy to synchronize already existing local data.
- 
- * !syncbans: synchronizes local ban data to the MySQL database.
- * !syncusers: synchronizes local users to the MySQL database.
- * !syncgroups: synchronizes local groups to the MySQL database.
  
 <!-- CONTRIBUTING -->
 ## Contributing
