@@ -96,6 +96,7 @@ https://github.com/sunset-developer/ulibsync
  
  * !syncbans: synchronizes local ban data to the MySQL database.
  * !syncusers: synchronizes local users to the MySQL database.
+ * !syncgroups: synchronizes local groups to the MySQL database.
  
 <!-- CONTRIBUTING -->
 ## Contributing
