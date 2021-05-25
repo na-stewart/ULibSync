@@ -40,9 +40,10 @@
     <a href="https://github.com/sunset-developer/ulibsync/issues">Report Bug</a>
     ·
     <a href="https://github.com/sunset-developer/ulibsync/issues">Request Feature</a>
+     ·
+    <a href="https://github.com/sunset-developer/ulibsync/wiki">Documentation</a>
   </p>
 </p>
-
 
 
 <!-- TABLE OF CONTENTS -->
@@ -61,7 +62,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-ULibSync is a Garry's Mod addon that effectively syncs ULib data in real time.
+ULibSync is a Garry's Mod addon that effectively syncs bans, users, and groups in real time.
+
+Never worry about losing work or having to copy and paste ULib data again and rest easy knowing that banned users stay banned.
 
 Designed with simplicity in mind so you can focus on what matters most, providing the best experience for your community.
 
