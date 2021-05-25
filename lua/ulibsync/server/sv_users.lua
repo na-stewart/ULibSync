@@ -62,7 +62,7 @@ function ULibSync.syncULibUserRemoved(steamid)
     q:start()
 end
 
-local function syncULibSyncUsersLocally(steamid, uLibSyncUser)
+local function syncULibSyncUserLocally(steamid, uLibSyncUser)
     if uLibSyncUser['removed'] == 0 then
         if not ULib.ucl.users[steamid] or ULib.ucl.users[steamid]['group'] != uLibSyncUser['group'] then
             ULib.ucl.addUser(steamid, nil, nil, uLibSyncUser['group'], nil)
@@ -84,7 +84,7 @@ function ULibSync.syncULibSyncUser(steamID64)
         local uLibSyncUser = data[1]
         if uLibSyncUser then
             removeULibSyncUsersHooks()
-            syncULibSyncUsersLocally(steamid, uLibSyncUser)
+            syncULibSyncUserLocally(steamid, uLibSyncUser)
             addULibSyncUsersHooks()
         end
     end
