@@ -1,4 +1,4 @@
--- Automation settings.
+-- Automation Settings.
 -- Sync ULibSync data locally on event.
 ULibSync.syncBanDataOnJoin = true
 ULibSync.syncUserOnJoin = true
