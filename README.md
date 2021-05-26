@@ -107,17 +107,17 @@ All ULibSync's functions are kept in the table "ULibSync" to prevent conflicts.
 
 ### Commands
 
-!syncbans: Syncs ULib bans to the ULibSync database.
+`!syncbans`: Syncs ULib bans to the ULibSync database.
 
-!syncbanslocal: Syncs ULibSync ban data locally from the ULibSync database.
+`!syncbanslocal`: Syncs ULibSync ban data locally from the ULibSync database.
 
-!syncgroups: Syncs ULib groups to the ULibSync database.
+`!syncgroups`: Syncs ULib groups to the ULibSync database.
 
-!syncgroupslocal: Syncs ULibSync groups locally from the ULibSync database. A map change may be required for ULX to reflect any changes.
+`!syncgroupslocal`: Syncs ULibSync groups locally from the ULibSync database. A map change may be required for ULX to reflect any changes.
 
-!syncusers: Syncs ULib users to the ULibSync database.
+`!syncusers`: Syncs ULib users to the ULibSync database.
 
-!syncuserslocal: Syncs ULibSync users locally from the ULibSync database.
+`!syncuserslocal`: Syncs ULibSync users locally from the ULibSync database.
 
 ### Bans
 
