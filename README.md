@@ -193,14 +193,14 @@ syncULibSyncUser(steamID64)
 
 ### Misc
 
-``lua
+```lua
 areTablesEqual(t1, t2, ignore_mt) 
 -- Checks if two tables are equal. ignore_mt prevents from checking recursively.
 
 log(msg, id, level, err)
 -- Used to log ULibSync activities. err is optional and only used when the log level is an error.
 -- 10: DEBUG | 20: INFO | 30: WARNING | 40: ERROR | 50: CRITICAL
-``
+```
 
  
 <!-- CONTRIBUTING -->
