@@ -64,8 +64,8 @@ end
 
 local function syncULibSyncUserLocally(steamid, uLibSyncUser)
     if uLibSyncUser['removed'] == 0 then
-        if not ULib.ucl.users[steamid] or ULib.ucl.users[steamid]['group'] != uLibSyncUser['group'] then
-            ULib.ucl.addUser(steamid, nil, nil, uLibSyncUser['group'], nil)
+        if not ULib.ucl.users[steamid] or ULib.ucl.users[steamid].group != uLibSyncUser.group then
+            ULib.ucl.addUser(steamid, nil, nil, uLibSyncUser.group, nil)
             ULibSync.log('User has been synced locally.', steamid, 20)       
         end
     else
@@ -77,7 +77,7 @@ local function syncULibSyncUserLocally(steamid, uLibSyncUser)
 end
 
 function ULibSync.syncULibSyncUsers()
-    local q = ULibSync.mysql:prepare('SELECT `group`, removed FROM ulib_users')
+    local q = ULibSync.mysql:prepare('SELECT `group`, removed, steamid FROM ulib_users')
     function q:onSuccess(data)   
         removeULibSyncUsersHooks()
         for index, uLibSyncUser in pairs(data) do

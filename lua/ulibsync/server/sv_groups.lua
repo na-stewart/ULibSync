@@ -129,7 +129,10 @@ local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLi
 end
 
 function ULibSync.convertToULibGroup(uLibSyncGroup)
-    local name = (not ULib.ucl.groups[name]) and uLibSyncGroup.name or uLibSyncGroup['old_name']
+    local name = uLibSyncGroup['old_name']
+    if not ULib.ucl.groups[name] then
+        name = uLibSyncGroup.name
+    end
     return name, ULib.ucl.groups[name]
 end
 
@@ -166,4 +169,3 @@ function ULibSync.syncULibSyncGroups()
     end
      q:start()
 end
-hook.Add('CheckPassword', 'ULibSyncUserGroupChange', ULibSync.syncULibSyncUser)

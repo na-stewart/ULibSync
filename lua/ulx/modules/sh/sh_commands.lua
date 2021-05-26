@@ -4,7 +4,7 @@ function ulx.syncBans(calling_ply)
 end
 local syncBans = ulx.command("ULibSync", "ulx syncbans", ulx.syncBans, "!syncbans")
 syncBans:defaultAccess(ULib.ACCESS_ADMIN)
-syncBans:help("Syncs ULib ban data to the ULibSync database.")
+syncBans:help("Syncs ULib bans to the ULibSync database.")
 
 function ulx.syncBansLocal(calling_ply)
     ULibSync.syncULibSyncBanData()
@@ -12,7 +12,7 @@ function ulx.syncBansLocal(calling_ply)
 end
 local syncBansLocal = ulx.command("ULibSync", "ulx syncbanslocal", ulx.syncBansLocal, "!syncbanslocal")
 syncBansLocal:defaultAccess(ULib.ACCESS_ADMIN)
-syncBansLocal:help("Syncs ULibSync bans locally from the ULibSync database. A map change may be required for ULX to reflect any changes.")
+syncBansLocal:help("Syncs ULibSync ban data locally from the ULibSync database.")
 
 function ulx.syncUsers(calling_ply)
     ULibSync.syncULibUsers()
@@ -28,7 +28,7 @@ function ulx.syncUsersLocal(calling_ply)
 end
 local syncUsersLocal = ulx.command("ULibSync", "ulx syncuserslocal", ulx.syncUsersLocal, "!syncuserslocal")
 syncUsersLocal:defaultAccess(ULib.ACCESS_ADMIN)
-syncUsersLocal:help("Syncs ULibSync users locally from the ULibSync database. A map change may be required for ULX to reflect any changes.")
+syncUsersLocal:help("Syncs ULibSync users locally from the ULibSync database.")
 
 function ulx.syncGroups(calling_ply)
     ULibSync.syncULibGroups()

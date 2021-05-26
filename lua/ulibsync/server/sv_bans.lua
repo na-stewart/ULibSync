@@ -93,7 +93,7 @@ function ULibSync.syncULibSyncBanData()
     function q:onSuccess(data)   
         removeULibSyncPlayerBanHooks()    
         for index, uLibSyncPlayerBanData in pairs(data) do
-            syncULibSyncPlayerBanDataLocally(data[uLibSyncPlayerBanData.steamid, uLibSyncPlayerBanData)
+            syncULibSyncPlayerBanDataLocally(uLibSyncPlayerBanData.steamid, uLibSyncPlayerBanData)
         end
         addULibSyncPlayerBanHooks()       
     end
@@ -105,14 +105,13 @@ end
 
 function ULibSync.syncULibSyncPlayerBanData(steamID64)
     local steamid = util.SteamIDFrom64(steamID64)
-    local q = ULibSync.mysql:prepare('SELECT steamid, reason, unban, manual_unban, username FROM ulib_bans WHERE steamid = ?')
+    local q = ULibSync.mysql:prepare('SELECT reason, unban, manual_unban, username FROM ulib_bans WHERE steamid = ?')
     q:setString(1, steamid)
     function q:onSuccess(data)   
         local uLibSyncPlayerBanData = data[1]
         if uLibSyncPlayerBanData then 
             removeULibSyncPlayerBanHooks()    
             syncULibSyncPlayerBanDataLocally(steamid, uLibSyncPlayerBanData)
-            ULib.refreshBans() -- Test if this does anything lol.
             addULibSyncPlayerBanHooks()       
         end
     end
