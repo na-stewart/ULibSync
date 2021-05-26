@@ -78,6 +78,7 @@ local function syncULibSyncPlayerBanDataLocally(steamid, uLibSyncPlayerBanData)
     if uLibSyncPlayerBanData['manual_unban'] == 1 then
         if ULib.bans[steamid] then
             ULib.unban(steamid)
+            ULib.refreshBans()
             ULibSync.log('UnBan has been synced locally.', steamid, 20)       
         end  
     elseif uLibSyncTimeRemaining > 0 or uLibSyncPlayerBanData.unban == '0' then
