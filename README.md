@@ -53,6 +53,7 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
+* [Getting Started](#getting-started)
 * [Contributing](#contributing)
 * [License](#license)
 * [Acknowledgements](#acknowledgements)
@@ -87,13 +88,115 @@ https://github.com/FredyH/MySQLOO
 
 ### Installation
 
-* Clone the repo
+* Clone the repo nj88
 ```sh
 https://github.com/sunset-developer/ulibsync
 ```
 * Install addon from the steam workshop.
 
 (Coming soon)
+
+## Documentation
+
+All ULibSync's functions are kept in the table "ULibSync" to prevent conflicts.
+
+### Misc
+
+!syncbans: Syncs ULib bans to the ULibSync database.
+
+!syncbanslocal: Syncs ULibSync ban data locally from the ULibSync database.
+
+!syncgroups: Syncs ULib groups to the ULibSync database.
+
+!syncgroupslocal: Syncs ULibSync groups locally from the ULibSync database. A map change may be required for ULX to reflect any changes.
+
+!syncusers: Syncs ULib users to the ULibSync database.
+
+!syncuserslocal: Syncs ULibSync users locally from the ULibSync database.
+
+### Bans
+
+```lua
+initBanSync()
+-- Initalizes ban syncing. This is currently called on a successful database connection.
+
+syncULibPlayerBans()
+-- Syncs all local ULib bans to the database.
+
+syncULibPlayerBan(steamid, banData)
+-- Syncs ULib ban to the database.
+
+syncULibPlayerUnban(steamid)
+-- Syncs unban to the database.
+
+syncULibSyncBanData()
+-- Syncs ULibSync ban data locally. This retreives all ban data on the database.
+
+syncULibSyncPlayerBanData(steamID64)
+-- Syncs ULibSync player ban data locally. This retreives ban data associated with a steamid from the database.
+```
+
+### Groups
+
+```lua
+initBanSync()
+-- Initalizes group syncing. This is currently called on a successful database connection.
+
+syncULibGroups()
+-- Syncs all local ULib groups to the database.
+
+syncULibGroup(groupName, groupData)
+-- Syncs ULib group to the database.
+
+syncULibGroupRemoved(groupName)
+-- Syncs group removal to the database.
+
+syncULibGroupRenamed(oldName, newName)
+-- Syncs group new name to the database.
+
+syncULibGroupChanged(groupName, dataName, newData)
+-- This method makes it easy to change a singular field in the ulib_groups table. Prevents repetitive code.
+
+convertToULibGroup(uLibSyncGroup)
+-- Retreives local ULib group from ULibSync group.
+
+syncULibSyncGroups()
+-- Syncs ULibSync groups locally.
+```
+
+### Users
+
+```lua
+initUserSync()
+-- Initalizes user syncing. This is currently called on a successful database connection.
+
+syncULibUsers()
+-- Syncs all local ULib users to the database.
+
+syncULibUser(steamid, group)
+-- Syncs ULib user to the database. Group is the name of the group associated with a user, for example: admin or operator.
+
+syncULibUserRemoved(steamid)
+-- Syncs user removal to the database.
+
+syncULibSyncUsers()
+-- Syncs ULibSync users locally. This retreives all users on the database.
+
+syncULibSyncUser(steamID64)
+-- Syncs ULibSync user locally. This retreives a user associated with a steamid from the database.
+```
+
+### Misc
+
+``lua
+areTablesEqual(t1, t2, ignore_mt) 
+-- Checks if two tables are equal. ignore_mt prevents from checking recursively.
+
+log(msg, id, level, err)
+-- Used to log ULibSync activities. err is optional and only used when the log level is an error.
+-- 10: DEBUG | 20: INFO | 30: WARNING | 40: ERROR | 50: CRITICAL
+``
+
  
 <!-- CONTRIBUTING -->
 ## Contributing
