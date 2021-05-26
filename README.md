@@ -53,6 +53,11 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
+* [Documentation](#documentation)
+   * [Commands](#commands)
+   * [Bans](#bans)
+   * [Groups](#groups)
+   * [Users](#users)
 * [Getting Started](#getting-started)
 * [Contributing](#contributing)
 * [License](#license)
@@ -100,7 +105,7 @@ https://github.com/sunset-developer/ulibsync
 
 All ULibSync's functions are kept in the table "ULibSync" to prevent conflicts.
 
-### Misc
+### Commands
 
 !syncbans: Syncs ULib bans to the ULibSync database.
 
