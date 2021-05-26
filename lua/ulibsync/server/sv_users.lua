@@ -108,4 +108,4 @@ function ULibSync.syncULibSyncUser(steamID64)
     end
      q:start()
 end
-hook.Add('CheckPassword', 'ULibSyncUserGroupChange', ULibSync.syncULibSyncUser)
+if ULibSync.syncUserOnJoin then hook.Add('CheckPassword', 'ULibSyncUserGroupChange', ULibSync.syncULibSyncUser) end
