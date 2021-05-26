@@ -35,7 +35,7 @@
   <h3 align="center">ULibSync</h3>
 
   <p align="center">
-    An easy, efficent, and effective Garry's Mod addon for syncing ULib data. 
+    An easy, efficient, and effective Garry's Mod addon for syncing ULib data. 
     <br />
     <a href="https://github.com/sunset-developer/ulibsync/issues">Report Bug</a>
     ·
