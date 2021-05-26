@@ -3,7 +3,7 @@ local function createULibSyncBanDataTable()
     '`id` INT AUTO_INCREMENT PRIMARY KEY,' ..
     '`steamid` VARCHAR(18) UNIQUE NOT NULL,' ..
     '`reason` TINYTEXT,' ..
-    '`unban` VARCHAR(12) UNIQUE NOT NULL,' ..
+    '`unban` VARCHAR(12) NOT NULL,' ..
     '`manual_unban` BOOLEAN NOT NULL DEFAULT FALSE,' ..
     '`username` VARCHAR(32),' ..
     '`host` VARCHAR(60) NOT NULL,' ..
