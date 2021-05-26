@@ -165,8 +165,7 @@ function ULibSync.syncULibSyncGroups()
         addULibSyncGroupsHooks()
     end
     function q:onError(err)
-        ULibSync.log('Groups have not been synced locally.', nil, 40, err)
+        ULibSync.log('Local syncing failed.', 'groups', 40, err)
     end
      q:start()
 end
-hook.Add('CheckPassword', 'ULibSyncUserGroupChange', ULibSync.syncULibSyncUser)

@@ -1,7 +1,11 @@
+-- Automation Settings.
+-- Sync ULibSync data locally on event.
+ULibSync.syncBanDataOnJoin = true
+ULibSync.syncUserOnJoin = true
 ULibSync.syncGroupsOnInit = true
 
---MySQL Settings
---You will need MySQLOO for this.
+-- MySQL Settings.
+-- You need MySQLOO for this.
 ULibSync.ip = "example.com"
 ULibSync.username = "example"
 ULibSync.password = "password"

@@ -78,7 +78,6 @@ local function syncULibSyncPlayerBanDataLocally(steamid, uLibSyncPlayerBanData)
     if uLibSyncPlayerBanData['manual_unban'] == 1 then
         if ULib.bans[steamid] then
             ULib.unban(steamid)
-            ULib.refreshBans()
             ULibSync.log('UnBan has been synced locally.', steamid, 20)       
         end  
     elseif uLibSyncTimeRemaining > 0 or uLibSyncPlayerBanData.unban == '0' then
@@ -89,9 +88,24 @@ local function syncULibSyncPlayerBanDataLocally(steamid, uLibSyncPlayerBanData)
     end
 end
 
+function ULibSync.syncULibSyncBanData()
+    local q = ULibSync.mysql:prepare('SELECT steamid, reason, unban, manual_unban, username FROM ulib_bans')
+    function q:onSuccess(data)   
+        removeULibSyncPlayerBanHooks()    
+        for index, uLibSyncPlayerBanData in pairs(data) do
+            syncULibSyncPlayerBanDataLocally(uLibSyncPlayerBanData.steamid, uLibSyncPlayerBanData)
+        end
+        addULibSyncPlayerBanHooks()       
+    end
+    function q:onError(err)
+        ULibSync.log('Local syncing failed.', 'bans', 40, err)
+    end
+    q:start()
+end
+
 function ULibSync.syncULibSyncPlayerBanData(steamID64)
     local steamid = util.SteamIDFrom64(steamID64)
-    local q = ULibSync.mysql:prepare('SELECT steamid, reason, unban, manual_unban, username FROM ulib_bans WHERE steamid = ?')
+    local q = ULibSync.mysql:prepare('SELECT reason, unban, manual_unban, username FROM ulib_bans WHERE steamid = ?')
     q:setString(1, steamid)
     function q:onSuccess(data)   
         local uLibSyncPlayerBanData = data[1]
@@ -102,9 +116,9 @@ function ULibSync.syncULibSyncPlayerBanData(steamID64)
         end
     end
     function q:onError(err)
-        ULibSync.log('Ban has not been synced locally.', steamid, 20, err)
+        ULibSync.log('Ban has not been synced locally.', steamid, 40, err)
     end
     q:start()
     q:wait(true)
 end
-hook.Add('CheckPassword', 'ULibSyncPlayerBanCheck', ULibSync.syncULibSyncPlayerBanData)
+if ULibSync.syncBanDataOnJoin then hook.Add('CheckPassword', 'ULibSyncPlayerBanCheck', ULibSync.syncULibSyncPlayerBanData) end
