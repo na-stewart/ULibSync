@@ -95,7 +95,6 @@ function ULibSync.syncULibGroupRenamed(oldName, newName)
 end
 
 function ULibSync.syncULibGroupChanged(groupName, dataName, newData)
-    -- This method makes it easy to change a singular field in the ulib_groups table. Prevents repetitive code.
     local q = ULibSync.mysql:prepare(string.format('UPDATE ulib_groups SET %s = ? WHERE name = ?', dataName))
     if newData then q:setString(1, newData) end
     q:setString(2, groupName)

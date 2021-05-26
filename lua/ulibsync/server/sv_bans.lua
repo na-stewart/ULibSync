@@ -38,7 +38,7 @@ function ULibSync.syncULibPlayerBans()
     end
 end
 
-function ULibSync.syncULibPlayerBan(steamid, banData, replace)
+function ULibSync.syncULibPlayerBan(steamid, banData)
     local q = ULibSync.mysql:prepare('REPLACE INTO ulib_bans (`steamid`, `reason`, `unban`, `username`, `host`, `admin`) VALUES (?, ?, ?, ?, ?, ?)')
     q:setString(1, steamid)
     q:setString(3, tostring(banData.unban))

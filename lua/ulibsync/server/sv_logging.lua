@@ -16,7 +16,7 @@ local function parse_log_level(level)
     return levelStr
 end
 
-function ULibSync.log(data, id, level, err)
+function ULibSync.log(msg, id, level, err)
     local unformatted  = (level > 20) and '[ULibSync] (%s) %s: %s %s\n' or '[ULibSync] (%s) %s: %s\n'
-    ServerLog(string.format(unformatted, id,  parse_log_level(level), data, err))
+    ServerLog(string.format(unformatted, id,  parse_log_level(level), msg, err))
 end
