@@ -62,7 +62,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-ULibSync is a Garry's Mod addon that effectively syncs bans, users, and groups in real time.
+ULibSync is a Garry's Mod addon that effectively syncs bans, users, and groups.
+
+ULibSync automatically handles changes locally and syncs them with the database. 
 
 Develop your community stress free and rest easy knowing that banned users stay banned.
 
