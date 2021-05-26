@@ -89,6 +89,21 @@ local function syncULibSyncPlayerBanDataLocally(steamid, uLibSyncPlayerBanData)
     end
 end
 
+function ULibSync.syncULibSyncBanData()
+    local q = ULibSync.mysql:prepare('SELECT steamid, reason, unban, manual_unban, username FROM ulib_bans')
+    function q:onSuccess(data)   
+        removeULibSyncPlayerBanHooks()    
+        for index, uLibSyncPlayerBanData in pairs(data) do
+            syncULibSyncPlayerBanDataLocally(data[uLibSyncPlayerBanData.steamid, uLibSyncPlayerBanData)
+        end
+        addULibSyncPlayerBanHooks()       
+    end
+    function q:onError(err)
+        ULibSync.log('Local syncing failed.', 'bans', 40, err)
+    end
+    q:start()
+end
+
 function ULibSync.syncULibSyncPlayerBanData(steamID64)
     local steamid = util.SteamIDFrom64(steamID64)
     local q = ULibSync.mysql:prepare('SELECT steamid, reason, unban, manual_unban, username FROM ulib_bans WHERE steamid = ?')
@@ -102,7 +117,7 @@ function ULibSync.syncULibSyncPlayerBanData(steamID64)
         end
     end
     function q:onError(err)
-        ULibSync.log('Ban has not been synced locally.', steamid, 20, err)
+        ULibSync.log('Ban has not been synced locally.', steamid, 40, err)
     end
     q:start()
     q:wait(true)

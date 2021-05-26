@@ -129,10 +129,7 @@ local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLi
 end
 
 function ULibSync.convertToULibGroup(uLibSyncGroup)
-    local name = uLibSyncGroup['old_name']
-    if not ULib.ucl.groups[name] then
-        name = uLibSyncGroup.name
-    end
+    local name = (not ULib.ucl.groups[name]) and uLibSyncGroup.name or uLibSyncGroup['old_name']
     return name, ULib.ucl.groups[name]
 end
 
@@ -165,7 +162,7 @@ function ULibSync.syncULibSyncGroups()
         addULibSyncGroupsHooks()
     end
     function q:onError(err)
-        ULibSync.log('Groups have not been synced locally.', nil, 40, err)
+        ULibSync.log('Local syncing failed.', 'groups', 40, err)
     end
      q:start()
 end

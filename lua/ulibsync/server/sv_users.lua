@@ -76,6 +76,21 @@ local function syncULibSyncUserLocally(steamid, uLibSyncUser)
     end       
 end
 
+function ULibSync.syncULibSyncUsers()
+    local q = ULibSync.mysql:prepare('SELECT `group`, removed FROM ulib_users')
+    function q:onSuccess(data)   
+        removeULibSyncUsersHooks()
+        for index, uLibSyncUser in pairs(data) do
+            syncULibSyncUserLocally(uLibSyncUser.steamid, uLibSyncUser)
+        end
+        addULibSyncUsersHooks()   
+    end
+    function q:onError(err)
+        ULibSync.log('Local syncing failed.', 'users', 40, err)
+    end
+    q:start()
+end
+
 function ULibSync.syncULibSyncUser(steamID64)
     local steamid = util.SteamIDFrom64(steamID64)
     local q = ULibSync.mysql:prepare('SELECT `group`, removed FROM ulib_users WHERE steamid = ?')
