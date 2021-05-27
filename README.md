@@ -40,8 +40,6 @@
     <a href="https://github.com/sunset-developer/ulibsync/issues">Report Bug</a>
     ·
     <a href="https://github.com/sunset-developer/ulibsync/issues">Request Feature</a>
-     ·
-    <a href="https://github.com/sunset-developer/ulibsync/wiki">Documentation</a>
   </p>
 </p>
 
