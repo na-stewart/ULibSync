@@ -10,10 +10,6 @@
 *** github_username, repo_name, twitter_handle, email
 -->
 
-
-
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -125,6 +121,8 @@ Remember to configure ULibSync in the `sv_config.lua` file.
 
 ### Bans
 
+A player's ban data is synced on join if `syncBanDataOnJoin` is true in the config. All ban data can be retreived via !getbans.
+
 ```lua
 initBanSync()
 -- Initalizes ban syncing. This is currently called on a successful database connection.
@@ -146,6 +144,8 @@ syncULibSyncPlayerBanData(steamID64)
 ```
 
 ### Groups
+
+Group's are synced on map change if `syncGroupsOnInit` is true in the config. This is off by default and all groups can be retreived via !getgroups.
 
 ```lua
 initBanSync()
@@ -174,6 +174,8 @@ syncULibSyncGroups()
 ```
 
 ### Users
+
+A player's user data is synced on join if `syncUsersOnJoin` is true in the config. All users can be retreived via !getusers.
 
 ```lua
 initUserSync()
