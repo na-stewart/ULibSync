@@ -119,8 +119,6 @@ Remember to configure ULibSync in the `sv_config.lua` file.
 
 `!getgroups`: Retreives groups from the ULibSync database.
 
-`!syncgroups`: Syncs ULib groups to the ULibSync database.
-
 `!syncall`: Syncs all ULib data to the ULibSync database.
 
 `!getall`: Retreives all ULib data from the ULibSync database.
