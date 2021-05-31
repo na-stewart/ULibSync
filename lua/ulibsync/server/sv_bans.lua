@@ -69,8 +69,8 @@ function ULibSync.syncULibPlayerUnban(steamid)
 end
 
 local function timeRemaining(seconds)
-    secondsToNumber = tonumber(seconds)
-    return (secondsToNumber > 0) and (secondsToNumber - os.time()) / 60 or 0
+    numberSeconds = tonumber(seconds)
+    return (numberSeconds > 0) and (numberSeconds - os.time()) / 60 or 0
 end
 
 local function syncULibSyncPlayerBanDataLocally(steamid, uLibSyncPlayerBanData)

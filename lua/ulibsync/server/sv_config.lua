@@ -1,8 +1,8 @@
 -- Automation Settings.
 -- Sync ULibSync data locally on event.
 ULibSync.syncBanDataOnJoin = true
-ULibSync.syncUserOnJoin = true
-ULibSync.syncGroupsOnInit = true
+ULibSync.syncUsersOnJoin = true
+ULibSync.syncGroupsOnInit = false
 
 -- MySQL Settings.
 -- You need MySQLOO for this.

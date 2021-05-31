@@ -108,18 +108,20 @@ function ULibSync.syncULibGroupChanged(groupName, dataName, newData)
 end
 
 local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLibSyncGroupAllow, uLibSyncGroupData)
+    local addedGroupPermissions = ULibSync.checkTableForChangedValues(uLibSyncGroupAllow, uLibGroupData.allow)
+    local removedGroupPermissions = ULibSync.checkTableForChangedValues(uLibGroupData.allow, uLibSyncGroupAllow)
     if uLibGroupData['inherit_from'] != uLibSyncGroupData['inherit_from'] then
         ULib.ucl.setGroupInheritance(uLibGroupName, uLibSyncGroupData['inherit_from'])
-        ULibSync.log('Group inherit_from has been synced locally.', uLibSyncGroupData.name, 20)     
+        ULibSync.log(string.format('Group inherit_from %s has been synced locally.', uLibSyncGroupData['inherit_from']), uLibSyncGroupData.name, 20)     
     end
     if uLibGroupData['can_target'] != uLibSyncGroupData['can_target'] then
         ULib.ucl.setGroupCanTarget(uLibGroupName, uLibSyncGroupData['can_target'])
         ULibSync.log('Group can_target has been synced locally.', uLibSyncGroupData.name, 20)     
     end
-    if not ULibSync.areTablesEqual(uLibSyncGroupAllow, uLibGroupData.allow) then
-        uLibGroupData.allow = uLibSyncGroupAllow
-        ULib.ucl.saveGroups()
-        ULibSync.log('Group allow has been synced locally.', uLibSyncGroupData.name, 20)     
+    if next(addedGroupPermissions) or next(removedGroupPermissions)then
+        ULib.ucl.groupAllow(uLibGroupName, addedGroupPermissions, true)
+        ULib.ucl.groupAllow(uLibGroupName,removedGroupPermissions, false)
+        ULibSync.log('Group allow has been synced locally.', uLibSyncGroupData.name, 20)
     end
     if uLibGroupName != uLibSyncGroupData.name then
         ULib.ucl.renameGroup(uLibGroupName, uLibSyncGroupData.name)
