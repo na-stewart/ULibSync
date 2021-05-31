@@ -1,7 +1,7 @@
 -- Automation Settings.
 -- Sync ULibSync data locally on event.
 ULibSync.syncBanDataOnJoin = true
-ULibSync.syncUserOnJoin = true
+ULibSync.syncUsersOnJoin = true
 ULibSync.syncGroupsOnInit = false
 
 -- MySQL Settings.
