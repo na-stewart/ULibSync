@@ -39,9 +39,7 @@
     <br />
     <a href="https://github.com/sunset-developer/ulibsync/issues">Report Bug</a>
     ·
-    <a href="https://github.com/sunset-developer/ulibsync/issues">Request Feature</a>
-     ·
-    <a href="https://github.com/sunset-developer/ulibsync/wiki">Documentation</a>
+    <a href="https://github.com/sunset-developer/ulibsync/pulls">Request Feature</a>
   </p>
 </p>
 
@@ -70,7 +68,7 @@
 
 ULibSync is a Garry's Mod addon that effectively syncs bans, users, and groups.
 
-ULibSync automatically handles changes locally and syncs them with the database. 
+ULibSync automatically handles local changes and syncs them with the database. 
 
 Develop your community stress free and rest easy knowing that banned users stay banned.
 
@@ -104,6 +102,8 @@ https://github.com/sunset-developer/ulibsync
 ## Documentation
 
 All ULibSync's functions are kept in the table "ULibSync" to prevent conflicts.
+
+Remember to configure ULibSync in the `sv_config.lua` file.
 
 ### Commands
 
