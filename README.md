@@ -107,17 +107,23 @@ Remember to configure ULibSync in the `sv_config.lua` file.
 
 ### Commands
 
-`!syncbans`: Syncs ULib bans to the ULibSync database.
+`!syncbans`: Syncs bans to the ULibSync database.
 
-`!syncbanslocal`: Syncs ULibSync ban data locally from the ULibSync database.
+`!getbans`: Retreives ban data from the ULibSync database.
+
+`!syncusers`: Syncs users to the ULibSync database.
+
+`!getusers`: Retreives users from the ULibSync database.
+
+`!syncgroups`: Syncs groups to the ULibSync database.
+
+`!getgroups`: Retreives groups from the ULibSync database.
 
 `!syncgroups`: Syncs ULib groups to the ULibSync database.
 
-`!syncgroupslocal`: Syncs ULibSync groups locally from the ULibSync database. A map change may be required for ULX to reflect any changes.
+`!syncall`: Syncs all ULib data to the ULibSync database.
 
-`!syncusers`: Syncs ULib users to the ULibSync database.
-
-`!syncuserslocal`: Syncs ULibSync users locally from the ULibSync database.
+`!getall`: Retreives all ULib data from the ULibSync database.
 
 ### Bans
 
@@ -194,8 +200,8 @@ syncULibSyncUser(steamID64)
 ### Misc
 
 ```lua
-areTablesEqual(t1, t2, ignore_mt) 
--- Checks if two tables are equal. ignore_mt prevents from checking recursively.
+checkTableForChangedValues(originalTable, updatedTable)
+-- Crosschecks original table with an updated table and returns the values that are different.
 
 log(msg, id, level, err)
 -- Used to log ULibSync activities. err is optional and only used when the log level is an error.
