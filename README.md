@@ -91,7 +91,7 @@ https://github.com/FredyH/MySQLOO
 
 ### Installation
 
-* Clone the repo nj88
+* Clone the repo.
 ```sh
 https://github.com/sunset-developer/ulibsync
 ```
