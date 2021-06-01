@@ -62,11 +62,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-ULibSync is a Garry's Mod addon that effectively syncs bans, users, and groups.
-
-Develop your community stress free and rest easy knowing that banned users stay banned.
-
-ULibSync automatically handles local changes and syncs them with the database. 
+ULibSync is a Garry's Mod addon that automatically syncs bans, users, and groups.
 
 Designed with simplicity in mind so you can focus on what matters most, providing the best experience for your community.
 
@@ -143,7 +139,7 @@ syncULibSyncPlayerBanData(steamID64)
 
 ### Groups
 
-Group's are synced on map change if `syncGroupsOnInit` is true in the config. This is off by default and all groups can be retreived via !getgroups.
+Group's are synced on map change if `syncGroupsOnInit` is true in the config. This is off by default. All groups can be retreived via !getgroups.
 
 ```lua
 initBanSync()
