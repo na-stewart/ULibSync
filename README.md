@@ -99,8 +99,6 @@ https://github.com/sunset-developer/ulibsync
 
 All ULibSync's functions are kept in the table "ULibSync" to prevent conflicts.
 
-Remember to configure ULibSync in the `sv_config.lua` file.
-
 ### Commands
 
 `!syncbans`: Syncs bans to the ULibSync database.
