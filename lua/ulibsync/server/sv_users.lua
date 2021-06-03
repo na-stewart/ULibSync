@@ -119,6 +119,6 @@ function ULibSync.syncULibSyncUser(steamID64)
     function q:onError(err)
         ULibSync.log('User has not been synced locally.', steamid, 40, err)
     end
-     q:start()
+    q:start()
 end
 if ULibSync.syncUsersOnJoin then hook.Add('CheckPassword', 'ULibSyncUserGroupChange', ULibSync.syncULibSyncUser, HOOK_LOW) end
