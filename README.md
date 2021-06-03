@@ -58,7 +58,6 @@
 * [Acknowledgements](#acknowledgements)
 
 
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -95,7 +94,20 @@ https://github.com/sunset-developer/ulibsync
 
 All ULibSync's functions are kept in the table "ULibSync" to prevent conflicts.
 
+Keep in mind that player specific data is synced when they join unless you execute a command to retreive the data yourself. Repeatedly pinging the database for changes isn't optimal and didn't seem necessary. 
+
+Data that is classified as ULibSync data (ex: ULibSyncBanData) is contained on the database.
+
+Data that is classified as ULib data (ex: ULibPlayerBan) is contained locally.
+
 ### Commands
+
+All of these commands don't need to be executed very often.
+
+Only use the sync commands when local data has not been synced onto the database yet. All changes made to ULib data via ULX are automatically synced.
+
+Never use the get commands unless you disabled syncing on events (ex: on join) in the config. The only
+exception to this rule is the `!getgroups` command since syncing groups on server initialization is disabled by default.
 
 `!syncbans`: Syncs bans to the ULibSync database.
 
@@ -117,6 +129,8 @@ All ULibSync's functions are kept in the table "ULibSync" to prevent conflicts.
 
 A player's ban data is synced on join if `syncBanDataOnJoin` is true in the config. All ban data can be retreived via !getbans.
 
+If a player has been unbanned on server A, it will be synced when they connect to server B. However this player may not be able to join until a map change or server restart. Continually attempting to rejoin may fix this. This issue does not appear to be fixable on my end as it's a ULib related problem.
+
 ```lua
 initBanSync()
 -- Initalizes ban syncing. This is currently called on a successful database connection.
@@ -135,6 +149,33 @@ syncULibSyncBanData()
 
 syncULibSyncPlayerBanData(steamID64)
 -- Syncs ULibSync player ban data locally. This retreives ban data associated with a steamid from the database.
+```
+
+### Users
+
+A player's user data is synced on join if `syncUsersOnJoin` is true in the config. All users can be retreived via !getusers.
+
+```lua
+initUserSync()
+-- Initalizes user syncing. This is currently called on a successful database connection.
+
+syncULibUsers()
+-- Syncs all local ULib users to the database.
+
+syncULibUser(steamid, group)
+-- Syncs ULib user to the database. Group is the name of the group associated with a user, for example: admin or operator.
+
+syncULibUserRemoved(steamid)
+-- Syncs user removal to the database.
+
+syncULibUsersGroupChanged(oldGroup, newGroup)
+-- Syncs a group change on all users with the old group. For example, if superadmin is renamed to ultimateadmin, all users with the superadmin role will now have the ultimateadmin role.
+
+syncULibSyncUsers()
+-- Syncs ULibSync users locally. This retreives all users on the database.
+
+syncULibSyncUser(steamID64)
+-- Syncs ULibSync user locally. This retreives a user associated with a steamid from the database.
 ```
 
 ### Groups
@@ -165,30 +206,6 @@ convertToULibGroup(uLibSyncGroup)
 
 syncULibSyncGroups()
 -- Syncs ULibSync groups locally.
-```
-
-### Users
-
-A player's user data is synced on join if `syncUsersOnJoin` is true in the config. All users can be retreived via !getusers.
-
-```lua
-initUserSync()
--- Initalizes user syncing. This is currently called on a successful database connection.
-
-syncULibUsers()
--- Syncs all local ULib users to the database.
-
-syncULibUser(steamid, group)
--- Syncs ULib user to the database. Group is the name of the group associated with a user, for example: admin or operator.
-
-syncULibUserRemoved(steamid)
--- Syncs user removal to the database.
-
-syncULibSyncUsers()
--- Syncs ULibSync users locally. This retreives all users on the database.
-
-syncULibSyncUser(steamID64)
--- Syncs ULibSync user locally. This retreives a user associated with a steamid from the database.
 ```
 
 ### Misc

@@ -87,6 +87,7 @@ function ULibSync.syncULibGroupRenamed(oldName, newName)
     q:setString(3, oldName)
     function q:onSuccess(data)
         ULibSync.log('Group rename has been synced successfully.', newName, 20)
+        ULibSync.syncULibUsersGroupChanged(oldName, newName)
     end
     function q:onError(err)
         ULibSync.log('Group rename has not been synced.', newName, 40, err)

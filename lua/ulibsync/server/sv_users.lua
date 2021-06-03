@@ -62,11 +62,28 @@ function ULibSync.syncULibUserRemoved(steamid)
     q:start()
 end
 
+function ULibSync.syncULibUsersGroupChanged(oldGroup, newGroup)
+    local q = ULibSync.mysql:prepare('UPDATE ulib_users SET `group` = ? WHERE `group` = ?')
+    q:setString(1, newGroup)
+    q:setString(2, oldGroup)
+    function q:onSuccess(data)
+        ULibSync.log('Users group change been synced successfully.', newGroup, 20)
+    end
+    function q:onError(err)
+        ULibSync.log('Users group change has not been synced.', newGroup, 40, err)
+    end
+    q:start()
+end
+
 local function syncULibSyncUserLocally(steamid, uLibSyncUser)
     if uLibSyncUser['removed'] == 0 then
         if not ULib.ucl.users[steamid] or ULib.ucl.users[steamid].group != uLibSyncUser.group then
-            ULib.ucl.addUser(steamid, nil, nil, uLibSyncUser.group, nil)
-            ULibSync.log('User has been synced locally.', steamid, 20)       
+            success, result = pcall(ULib.ucl.addUser, steamid, nil, nil, uLibSyncUser.group, nil)
+            if success then
+                ULibSync.log('User has been synced locally.', steamid, 20)       
+            else
+                ULibSync.log('User has not been synced locally.', steamid, 40, result)       
+            end   
         end
     else
         if ULib.ucl.users[steamid] then
