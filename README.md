@@ -61,6 +61,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+![alt text](https://github.com/sunset-developer/ulibsync/blob/main/images/ulibsync.png)
+
 ULibSync is a Garry's Mod addon that automatically syncs bans, users, and groups.
 
 Designed with simplicity in mind so you can focus on what matters most, providing the best experience for your community.
