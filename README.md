@@ -109,7 +109,7 @@ All of these commands don't need to be executed very often.
 Only use the sync commands when local data has not been synced onto the database yet. All changes made to ULib data via ULX are automatically synced.
 
 Never use the get commands unless you disabled syncing on events (ex: on join) in the config. The only
-exception to this rule is the `!getgroups` command since syncing groups on server initialization is disabled by default.
+exception to this rule is the !getgroups command since syncing groups on server initialization is disabled by default.
 
 `!syncbans`: Syncs bans to the ULibSync database.
 
