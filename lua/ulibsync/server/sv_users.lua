@@ -78,12 +78,8 @@ end
 local function syncULibSyncUserLocally(steamid, uLibSyncUser)
     if uLibSyncUser['removed'] == 0 then
         if not ULib.ucl.users[steamid] or ULib.ucl.users[steamid].group != uLibSyncUser.group then
-            success, result = pcall(ULib.ucl.addUser, steamid, nil, nil, uLibSyncUser.group, nil)
-            if success then
-                ULibSync.log('User has been synced locally.', steamid, 20)       
-            else
-                ULibSync.log('User has not been synced locally.', steamid, 40, result)       
-            end   
+            ULib.ucl.addUser(steamid, nil, nil, uLibSyncUser.group, nil)
+            ULibSync.log('User has been synced locally.', steamid, 20)       
         end
     else
         if ULib.ucl.users[steamid] then
