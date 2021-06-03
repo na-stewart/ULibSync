@@ -198,7 +198,7 @@ syncULibGroupRemoved(groupName)
 -- Syncs group removal to the database.
 
 syncULibGroupRenamed(oldName, newName)
--- Syncs group new name to the database.
+-- Syncs group new name to the database. This will also change all user groups with the oldName to the newName.
 
 syncULibGroupChanged(groupName, dataName, newData)
 -- This method makes it easy to change a singular field in the ulib_groups table. Prevents repetitive code.
