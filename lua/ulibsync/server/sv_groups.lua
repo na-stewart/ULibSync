@@ -59,7 +59,7 @@ function ULibSync.syncULibGroup(groupName, groupData)
     if groupData['inherit_from'] then q:setString(3, groupData['inherit_from']) end
     if groupData['can_target'] then q:setString(4, groupData['can_target']) end
     function q:onSuccess(data)
-        ULibSync.log('Group has been synced successfully', groupName, 20)
+        ULibSync.log('Group has been synced successfully.', groupName, 20)
     end
     function q:onError(err)
         ULibSync.log('Group has not been synced.', groupName, 40, err)
@@ -67,12 +67,15 @@ function ULibSync.syncULibGroup(groupName, groupData)
     q:start()
 end
 
-function ULibSync.syncULibGroupRemoved(groupName)
+function ULibSync.syncULibGroupRemoved(groupName, oldGroup)
     local q = ULibSync.mysql:prepare('UPDATE ulib_groups SET removed = ? WHERE name = ?')
     q:setBoolean(1, true)
     q:setString(2, groupName)
     function q:onSuccess(data)
-        ULibSync.log('Group removal has been synced successfully.', groupName, 20)
+        print(groupName)
+        print(oldGroup['inherit_from'])
+        ULibSync.syncULibUsersGroupChanged(groupName, oldGroup['inherit_from'])
+        ULibSync.log('Group removal has been synced successfully.', groupName, 20)  
     end
     function q:onError(err)
         ULibSync.log('Group removal has not been synced.', groupName, 40, err)
@@ -86,8 +89,8 @@ function ULibSync.syncULibGroupRenamed(oldName, newName)
     q:setString(2, newName)
     q:setString(3, oldName)
     function q:onSuccess(data)
-        ULibSync.log('Group rename has been synced successfully.', newName, 20)
         ULibSync.syncULibUsersGroupChanged(oldName, newName)
+        ULibSync.log('Group rename has been synced successfully.', newName, 20) 
     end
     function q:onError(err)
         ULibSync.log('Group rename has not been synced.', newName, 40, err)
@@ -130,16 +133,10 @@ local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLi
     end
 end
 
-function ULibSync.convertToULibGroup(uLibSyncGroup)
-    local name = uLibSyncGroup['old_name']
-    if not ULib.ucl.groups[name] then
-        name = uLibSyncGroup.name
-    end
-    return name, ULib.ucl.groups[name]
-end
-
 local function syncULibSyncGroupLocally(uLibSyncGroupData)
-    local uLibGroupName, uLibGroupData = ULibSync.convertToULibGroup(uLibSyncGroupData)
+    local uLibGroupName = uLibSyncGroupData['old_name']
+    if not ULib.ucl.groups[uLibGroupName] then uLibGroupName = uLibSyncGroupData.name end
+    local uLibGroupData = ULib.ucl.groups[uLibGroupName]
     if uLibSyncGroupData.removed == 1 then
         if uLibGroupData then
             ULib.ucl.removeGroup(uLibGroupName)
