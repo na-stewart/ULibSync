@@ -79,7 +79,11 @@ To get a local copy up and running follow these simple steps.
 
 https://ulyssesmod.net/downloads.php
 
-* MySQLOO also is required.
+* Setup a MySQL server that ULibSync can connect to.
+
+https://www.mysql.com/
+
+* MySQLOO is required for ULibSync to connect to your MySQL database.
 
 https://github.com/FredyH/MySQLOO
 
