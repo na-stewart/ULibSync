@@ -2,7 +2,7 @@ require( 'mysqloo' )
 
 local function initULibSync()
     ULibSync.initBanSync()
-    ULibSync.initUserSync()
+    ULibSync.initUsersSync()
     ULibSync.initGroupsSync()
 end
 

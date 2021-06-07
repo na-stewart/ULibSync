@@ -47,12 +47,13 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
+* [Usage](#usage)
+  * [Initial Setup](#initial-setup)
+  * [Commands](#commands)
 * [Documentation](#documentation)
-   * [Commands](#commands)
    * [Bans](#bans)
    * [Groups](#groups)
    * [Users](#users)
-* [Getting Started](#getting-started)
 * [Contributing](#contributing)
 * [License](#license)
 * [Acknowledgements](#acknowledgements)
@@ -92,44 +93,67 @@ https://github.com/sunset-developer/ulibsync
 
 (Coming soon)
 
-## Documentation
+## Usage
 
-All ULibSync's functions are kept in the table "ULibSync" to prevent conflicts.
+ULibSync was designed to be incredibly easy to configure and use. All changes made to ULib data via ULX are automatically synced. Data associated to a player, a ban for example, is automatically synced locally on join. You can simply configure and forget.
 
-Keep in mind that player specific data is synced when they join unless you execute a command to retreive the data yourself. Repeatedly pinging the database for changes isn't optimal and didn't seem necessary. 
+### Initial Setup
 
-Data that is classified as ULibSync data (ex: ULibSyncBanData) is contained on the database.
+Once ULibSync has been added onto your Gmod server, you have to find the configuration file called sv_config.lua. Once found, you may configure ULibSync to your preferred preferences. Below is an example of it's contents:
 
-Data that is classified as ULib data (ex: ULibPlayerBan) is contained locally.
+```lua
+-- Sync On Event Settings
+ULibSync.syncBanDataOnJoin = true
+ULibSync.syncUsersOnJoin = true
+ULibSync.syncGroupsOnInit = false
+
+-- Logging Settings
+ULibSync.logs = true
+ULibSync.debug = false
+
+-- MySQL Settings
+ULibSync.ip = "example.com"
+ULibSync.username = "example"
+ULibSync.password = "password"
+ULibSync.database = "exampledb"
+ULibSync.port = 3306
+```
 
 ### Commands
 
 All of these commands don't need to be executed very often.
 
-Only use the sync commands when local data has not been synced onto the database yet. All changes made to ULib data via ULX are automatically synced.
+Sync commands really only needed to be executed when local data has not been synced onto the database yet. 
 
-Never use the get commands unless you disabled syncing on events (ex: on join) in the config. The only
-exception to this rule is the !getgroups command since syncing groups on server initialization is disabled by default.
+Keep in mind that data associated to a player is synced when they join. However, if you want to retreive all synced data at once, you would use a get command.
 
-`!syncbans`: Syncs bans to the ULibSync database.
+`!syncbans`: Syncs bans to the database.
 
-`!getbans`: Retreives ban data from the ULibSync database.
+`!getbans`: Retreives ban data from the database.
 
-`!syncusers`: Syncs users to the ULibSync database.
+`!syncusers`: Syncs users to the database.
 
-`!getusers`: Retreives users from the ULibSync database.
+`!getusers`: Retreives users from the database.
 
-`!syncgroups`: Syncs groups to the ULibSync database.
+`!syncgroups`: Syncs groups to the database.
 
-`!getgroups`: Retreives groups from the ULibSync database.
+`!getgroups`: Retreives groups from the database.
 
-`!syncall`: Syncs all ULib data to the ULibSync database.
+`!syncall`: Syncs all ULib data to the database.
 
-`!getall`: Retreives all ULib data from the ULibSync database.
+`!getall`: Retreives all ULib data from the database.
+
+
+## Documentation
+
+All ULibSync's functions are kept in the table "ULibSync" to prevent conflicts.
+
+Data that is classified as ULibSync data (ex: ULibSyncBanData) is contained on the database.
+
+Data that is classified as ULib data (ex: ULibPlayerBan) is contained locally.
+
 
 ### Bans
-
-A player's ban data is synced on join if `syncBanDataOnJoin` is true in the config. All ban data can be retreived via !getbans.
 
 If a player has been unbanned on server A, it will be synced when they connect to server B. However this player may not be able to join until a map change or server restart. Continually attempting to rejoin may fix this. This issue does not appear to be fixable on my end as it's a ULib related problem.
 
@@ -155,8 +179,6 @@ syncULibSyncPlayerBanData(steamID64)
 
 ### Users
 
-A player's user data is synced on join if `syncUsersOnJoin` is true in the config. All users can be retreived via !getusers.
-
 ```lua
 initUserSync()
 -- Initalizes user syncing. This is currently called on a successful database connection.
@@ -176,13 +198,13 @@ syncULibUsersGroupChanged(oldGroup, newGroup)
 syncULibSyncUsers()
 -- Syncs ULibSync users locally. This retreives all users on the database.
 
-syncULibSyncUser(steamID64)
+syncULibSyncUser(ply)
 -- Syncs ULibSync user locally. This retreives a user associated with a steamid from the database.
 ```
 
 ### Groups
 
-Group's are synced on map change if `syncGroupsOnInit` is true in the config. This is off by default. All groups can be retreived via !getgroups.
+When a group is renamed or deleted, all users with the renamed or deleted group will have their group automatcially updated. If one of your servers is behind on the group changes, a warning may appear that you are attempting to sync a user with a group that doesn't exist yet. Syncing groups locally on the server behind on changes may fix.
 
 ```lua
 initBanSync()
@@ -217,7 +239,7 @@ checkTableForChangedValues(originalTable, updatedTable)
 -- Crosschecks original table with an updated table and returns the values that are different.
 
 log(msg, id, level, err)
--- Used to log ULibSync activities. err is optional and only used when the log level is an error.
+-- Used to log ULibSync activities. err is optional and only used when the log level is a warning or above.
 -- 10: DEBUG | 20: INFO | 30: WARNING | 40: ERROR | 50: CRITICAL
 ```
 

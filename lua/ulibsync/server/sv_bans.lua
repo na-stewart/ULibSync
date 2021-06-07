@@ -28,6 +28,7 @@ local function removeULibSyncPlayerBanHooks()
 end
 
 function ULibSync.initBanSync()
+    ULibSync.log('Initializing sync.', 'bans', 10)
     createULibSyncBanDataTable()
     addULibSyncPlayerBanHooks()
 end
@@ -39,6 +40,7 @@ function ULibSync.syncULibPlayerBans()
 end
 
 function ULibSync.syncULibPlayerBan(steamid, banData)
+    ULibSync.log('Attemping to sync player ban.', steamid, 10)
     local q = ULibSync.mysql:prepare('REPLACE INTO ulib_bans (`steamid`, `reason`, `unban`, `username`, `host`, `admin`) VALUES (?, ?, ?, ?, ?, ?)')
     q:setString(1, steamid)
     q:setString(3, tostring(banData.unban))
@@ -47,7 +49,7 @@ function ULibSync.syncULibPlayerBan(steamid, banData)
     if banData.admin then q:setString(6, banData.admin) end
     if banData.name  then q:setString(4, banData.name) end
     function q:onSuccess(data)
-        ULibSync.log('Ban has been synced successfully', steamid, 20)
+        ULibSync.log('Ban has been synced successfully.', steamid, 20)
     end
     function q:onError(err)
         ULibSync.log('Ban has not been synced.', steamid, 40, err)
@@ -56,6 +58,7 @@ function ULibSync.syncULibPlayerBan(steamid, banData)
 end
 
 function ULibSync.syncULibPlayerUnban(steamid)
+    ULibSync.log('Attemping to sync player unban.', steamid, 10)
     local q = ULibSync.mysql:prepare('UPDATE ulib_bans SET manual_unban = ? WHERE steamid = ?')
     q:setBoolean(1, true)
     q:setString(2, steamid)
@@ -78,7 +81,7 @@ local function syncULibSyncPlayerBanDataLocally(steamid, uLibSyncPlayerBanData)
     if uLibSyncPlayerBanData['manual_unban'] == 1 then
         if ULib.bans[steamid] then
             ULib.unban(steamid)
-            ULibSync.log('UnBan has been synced locally.', steamid, 20)       
+            ULibSync.log('Unban has been synced locally.', steamid, 20)       
         end  
     elseif uLibSyncTimeRemaining > 0 or uLibSyncPlayerBanData.unban == '0' then
         if not ULib.bans[steamid] or ULib.bans[steamid].reason != uLibSyncPlayerBanData.reason or uLibSyncTimeRemaining != timeRemaining(ULib.bans[steamid].unban) then
@@ -89,6 +92,7 @@ local function syncULibSyncPlayerBanDataLocally(steamid, uLibSyncPlayerBanData)
 end
 
 function ULibSync.syncULibSyncBanData()
+    ULibSync.log('Attemping to sync locally.', 'bans', 10)
     local q = ULibSync.mysql:prepare('SELECT steamid, reason, unban, manual_unban, username FROM ulib_bans')
     function q:onSuccess(data)   
         removeULibSyncPlayerBanHooks()    
@@ -105,6 +109,7 @@ end
 
 function ULibSync.syncULibSyncPlayerBanData(steamID64)
     local steamid = util.SteamIDFrom64(steamID64)
+    ULibSync.log('Attemping to sync ban data locally.', steamid, 10)
     local q = ULibSync.mysql:prepare('SELECT reason, unban, manual_unban, username FROM ulib_bans WHERE steamid = ?')
     q:setString(1, steamid)
     function q:onSuccess(data)   

@@ -41,6 +41,7 @@ local function removeULibSyncGroupsHooks()
 end
 
 function ULibSync.initGroupsSync()
+    ULibSync.log('Initializing sync.', 'groups', 10)
     createULibSyncGroupsTable()
     addULibSyncGroupsHooks()
     if ULibSync.syncGroupsOnInit then ULibSync.syncULibSyncGroups() end
@@ -53,6 +54,7 @@ function ULibSync.syncULibGroups()
 end
 
 function ULibSync.syncULibGroup(groupName, groupData)
+    ULibSync.log('Attemping to sync group.', groupName, 10)
     local q = ULibSync.mysql:prepare('REPLACE INTO ulib_groups (`name`, `allow`, `inherit_from`, `can_target`) VALUES (?, ?, ?, ?)')
     q:setString(1, groupName)
     if groupData.allow then q:setString(2, ULib.makeKeyValues(groupData.allow)) end
@@ -68,12 +70,12 @@ function ULibSync.syncULibGroup(groupName, groupData)
 end
 
 function ULibSync.syncULibGroupRemoved(groupName, oldGroup)
-    local q = ULibSync.mysql:prepare('UPDATE ulib_groups SET removed = ? WHERE name = ?')
+    ULibSync.log('Attemping to sync group removal.', groupName, 10)
+    local q = ULibSync.mysql:prepare('UPDATE ulib_groups SET removed = ? WHERE name = ? AND removed = ?')
     q:setBoolean(1, true)
     q:setString(2, groupName)
+    q:setBoolean(3, false)
     function q:onSuccess(data)
-        print(groupName)
-        print(oldGroup['inherit_from'])
         ULibSync.syncULibUsersGroupChanged(groupName, oldGroup['inherit_from'])
         ULibSync.log('Group removal has been synced successfully.', groupName, 20)  
     end
@@ -83,25 +85,52 @@ function ULibSync.syncULibGroupRemoved(groupName, oldGroup)
     q:start()
 end
 
+local function deleteGroupRenamedToDuplicateGroup(groupName)
+    ULibSync.log('Attemping to delete group renamed to duplicate group.', groupName, 10)
+    local q = ULibSync.mysql:prepare('DELETE FROM `ulib_groups` WHERE name = ?')
+    q:setString(1, groupName)
+    function q:onSuccess(data)
+        ULibSync.log('Group renamed to duplicate group has been deleted.', groupName, 10)
+    end
+    function q:onError(err)
+        ULibSync.log('Group renamed to duplicate group has not been deleted.', groupName, 40)
+    end
+    q:start()
+end
+
+local function groupRenamedToDuplicate(newName, oldName, err) 
+    local duplicate = string.find(err, 'Duplicate entry')
+    if duplicate then
+        ULibSync.syncULibGroup(newName, ULib.ucl.groups[newName])
+        ULibSync.syncULibUsersGroupChanged(oldName, newName)
+        deleteGroupRenamedToDuplicateGroup(oldName)
+    end
+    return duplicate
+end
+
 function ULibSync.syncULibGroupRenamed(oldName, newName)
-    local q = ULibSync.mysql:prepare('UPDATE ulib_groups SET old_name = ?, name = ? WHERE name = ?')
+    ULibSync.log('Attemping to sync group renamed.', newName, 10)
+    local q = ULibSync.mysql:prepare('UPDATE ulib_groups SET old_name = ?, name = ? WHERE name = ? AND removed = ?')
     q:setString(1, oldName)
     q:setString(2, newName)
     q:setString(3, oldName)
+    q:setBoolean(4, false)
     function q:onSuccess(data)
         ULibSync.syncULibUsersGroupChanged(oldName, newName)
         ULibSync.log('Group rename has been synced successfully.', newName, 20) 
     end
     function q:onError(err)
-        ULibSync.log('Group rename has not been synced.', newName, 40, err)
+        if not groupRenamedToDuplicate(newName, oldName, err) then ULibSync.log('Group rename has not been synced.', newName, 40, err) end
     end
     q:start()
 end
 
 function ULibSync.syncULibGroupChanged(groupName, dataName, newData)
-    local q = ULibSync.mysql:prepare(string.format('UPDATE ulib_groups SET %s = ? WHERE name = ?', dataName))
+    ULibSync.log(string.format('Attempting to sync group %s.', dataName), groupName, 10)
+    local q = ULibSync.mysql:prepare(string.format('UPDATE ulib_groups SET %s = ? WHERE name = ? AND removed = ?', dataName))
     if newData then q:setString(1, newData) end
     q:setString(2, groupName)
+    q:setBoolean(3, false)
     function q:onSuccess(data)
         ULibSync.log(string.format('Group %s has been synced successfully.', dataName), groupName, 20)
     end
@@ -140,7 +169,7 @@ local function syncULibSyncGroupLocally(uLibSyncGroupData)
     if uLibSyncGroupData.removed == 1 then
         if uLibGroupData then
             ULib.ucl.removeGroup(uLibGroupName)
-            ULibSync.log('Group removal has been synced locally.', uLibGroupName, 20)       
+            ULibSync.log('Group removal has been synced locally.', uLibSyncGroupData.name, 20)       
         end
     else
         local uLibSyncGroupAllow = ULib.parseKeyValues(uLibSyncGroupData.allow)
@@ -155,6 +184,7 @@ local function syncULibSyncGroupLocally(uLibSyncGroupData)
 end
 
 function ULibSync.syncULibSyncGroups()
+    ULibSync.log('Attemping to sync locally.', 'groups', 10)
     local q = ULibSync.mysql:prepare('SELECT name, old_name, inherit_from, allow, removed, can_target, removed FROM ulib_groups')
     function q:onSuccess(data)
         removeULibSyncGroupsHooks()
