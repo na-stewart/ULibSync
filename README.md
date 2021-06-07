@@ -225,9 +225,6 @@ syncULibGroupRenamed(oldName, newName)
 syncULibGroupChanged(groupName, dataName, newData)
 -- This method makes it easy to change a singular field in the ulib_groups table. Prevents repetitive code.
 
-convertToULibGroup(uLibSyncGroup)
--- Retreives local ULib group from ULibSync group.
-
 syncULibSyncGroups()
 -- Syncs ULibSync groups locally.
 ```
