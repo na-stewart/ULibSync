@@ -95,7 +95,7 @@ https://github.com/sunset-developer/ulibsync
 ```
 * Install addon from the steam workshop.
 
-(Coming soon)
+https://steamcommunity.com/sharedfiles/filedetails/?id=2511750775
 
 ## Usage
 
