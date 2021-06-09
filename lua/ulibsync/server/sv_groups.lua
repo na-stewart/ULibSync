@@ -17,13 +17,13 @@ local function createULibSyncGroupsTable()
 end
 
 local function addULibSyncGroupsHooks()
-    hook.Add('ULibGroupAccessChanged', 'ULibSyncGroupAccessChanged', function (groupName, access, revoke) 
+    hook.Add('ULibGroupAccessChanged', 'ULibSyncGroupAccessChanged', function (groupName)
         ULibSync.syncULibGroupChanged(groupName, 'allow', ULib.makeKeyValues(ULib.ucl.groups[groupName].allow))
     end)
-    hook.Add('ULibGroupInheritanceChanged', 'ULibSyncGroupInheritanceChanged', function (groupName, newInherit, oldInherit) 
+    hook.Add('ULibGroupInheritanceChanged', 'ULibSyncGroupInheritanceChanged', function (groupName, newInherit)
         ULibSync.syncULibGroupChanged(groupName, 'inherit_from', newInherit)
     end)
-    hook.Add('ULibGroupCanTargetChanged', 'ULibSyncGroupCanTargetChanged', function (groupName, newTarget, oldTarget) 
+    hook.Add('ULibGroupCanTargetChanged', 'ULibSyncGroupCanTargetChanged', function (groupName, newTarget)
         ULibSync.syncULibGroupChanged(groupName, 'can_target', newTarget)
     end)
     hook.Add('ULibGroupRemoved', 'ULibSyncGroupRemoved', ULibSync.syncULibGroupRemoved)
@@ -32,12 +32,12 @@ local function addULibSyncGroupsHooks()
 end
 
 local function removeULibSyncGroupsHooks()
-    hook.Remove('ULibGroupAccessChanged', 'ULibSyncGroupAccessChanged')    
-    hook.Remove('ULibGroupRenamed', 'ULibSyncGroupRenamed')  
-    hook.Remove('ULibGroupInheritanceChanged', 'ULibSyncGroupInheritanceChanged')    
-    hook.Remove('ULibGroupCanTargetChanged', 'ULibSyncGroupCanTargetChanged')  
-    hook.Remove('ULibGroupRemoved', 'ULibSyncGroupRemoved')    
-    hook.Remove('ULibGroupCreated', 'ULibSyncGroupCreated')  
+    hook.Remove('ULibGroupAccessChanged', 'ULibSyncGroupAccessChanged')
+    hook.Remove('ULibGroupRenamed', 'ULibSyncGroupRenamed')
+    hook.Remove('ULibGroupInheritanceChanged', 'ULibSyncGroupInheritanceChanged')
+    hook.Remove('ULibGroupCanTargetChanged', 'ULibSyncGroupCanTargetChanged')
+    hook.Remove('ULibGroupRemoved', 'ULibSyncGroupRemoved')
+    hook.Remove('ULibGroupCreated', 'ULibSyncGroupCreated')
 end
 
 function ULibSync.initGroupsSync()
@@ -77,7 +77,7 @@ function ULibSync.syncULibGroupRemoved(groupName, oldGroup)
     q:setBoolean(3, false)
     function q:onSuccess(data)
         ULibSync.syncULibUsersGroupChanged(groupName, oldGroup['inherit_from'])
-        ULibSync.log('Group removal has been synced successfully.', groupName, 20)  
+        ULibSync.log('Group removal has been synced successfully.', groupName, 20)
     end
     function q:onError(err)
         ULibSync.log('Group removal has not been synced.', groupName, 40, err)
@@ -98,16 +98,6 @@ local function deleteGroupRenamedToDuplicateGroup(groupName)
     q:start()
 end
 
-local function groupRenamedToDuplicate(newName, oldName, err) 
-    local duplicate = string.find(err, 'Duplicate entry')
-    if duplicate then
-        ULibSync.syncULibGroup(newName, ULib.ucl.groups[newName])
-        ULibSync.syncULibUsersGroupChanged(oldName, newName)
-        deleteGroupRenamedToDuplicateGroup(oldName)
-    end
-    return duplicate
-end
-
 function ULibSync.syncULibGroupRenamed(oldName, newName)
     ULibSync.log('Attemping to sync group renamed.', newName, 10)
     local q = ULibSync.mysql:prepare('UPDATE ulib_groups SET old_name = ?, name = ? WHERE name = ? AND removed = ?')
@@ -117,10 +107,16 @@ function ULibSync.syncULibGroupRenamed(oldName, newName)
     q:setBoolean(4, false)
     function q:onSuccess(data)
         ULibSync.syncULibUsersGroupChanged(oldName, newName)
-        ULibSync.log('Group rename has been synced successfully.', newName, 20) 
+        ULibSync.log('Group rename has been synced successfully.', newName, 20)
     end
     function q:onError(err)
-        if not groupRenamedToDuplicate(newName, oldName, err) then ULibSync.log('Group rename has not been synced.', newName, 40, err) end
+        if string.find(err, 'Duplicate entry') then
+            ULibSync.syncULibGroup(newName, ULib.ucl.groups[newName])
+            ULibSync.syncULibUsersGroupChanged(oldName, newName)
+            deleteGroupRenamedToDuplicateGroup(oldName)
+        else
+            ULibSync.log('Group rename has not been synced.', newName, 40, err)
+        end
     end
     q:start()
 end
@@ -143,22 +139,22 @@ end
 local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLibSyncGroupAllow, uLibSyncGroupData)
     local addedGroupPermissions = ULibSync.checkTableForChangedValues(uLibSyncGroupAllow, uLibGroupData.allow)
     local removedGroupPermissions = ULibSync.checkTableForChangedValues(uLibGroupData.allow, uLibSyncGroupAllow)
-    if uLibGroupData['inherit_from'] != uLibSyncGroupData['inherit_from'] then
+    if uLibGroupData['inherit_from'] ~= uLibSyncGroupData['inherit_from'] then
         ULib.ucl.setGroupInheritance(uLibGroupName, uLibSyncGroupData['inherit_from'])
-        ULibSync.log(string.format('Group inherit_from %s has been synced locally.', uLibSyncGroupData['inherit_from']), uLibSyncGroupData.name, 20)     
+        ULibSync.log(string.format('Group inherit_from %s has been synced locally.', uLibSyncGroupData['inherit_from']), uLibSyncGroupData.name, 20)
     end
-    if uLibGroupData['can_target'] != uLibSyncGroupData['can_target'] then
+    if uLibGroupData['can_target'] ~= uLibSyncGroupData['can_target'] then
         ULib.ucl.setGroupCanTarget(uLibGroupName, uLibSyncGroupData['can_target'])
-        ULibSync.log('Group can_target has been synced locally.', uLibSyncGroupData.name, 20)     
+        ULibSync.log('Group can_target has been synced locally.', uLibSyncGroupData.name, 20)
     end
     if next(addedGroupPermissions) or next(removedGroupPermissions)then
         ULib.ucl.groupAllow(uLibGroupName, addedGroupPermissions, true)
         ULib.ucl.groupAllow(uLibGroupName, removedGroupPermissions, false)
         ULibSync.log('Group allow has been synced locally.', uLibSyncGroupData.name, 20)
     end
-    if uLibGroupName != uLibSyncGroupData.name then
+    if uLibGroupName ~= uLibSyncGroupData.name then
         ULib.ucl.renameGroup(uLibGroupName, uLibSyncGroupData.name)
-        ULibSync.log('Group rename has been synced locally.', uLibSyncGroupData.name, 20)    
+        ULibSync.log('Group rename has been synced locally.', uLibSyncGroupData.name, 20)
     end
 end
 
@@ -169,15 +165,15 @@ local function syncULibSyncGroupLocally(uLibSyncGroupData)
     if uLibSyncGroupData.removed == 1 then
         if uLibGroupData then
             ULib.ucl.removeGroup(uLibGroupName)
-            ULibSync.log('Group removal has been synced locally.', uLibSyncGroupData.name, 20)       
+            ULibSync.log('Group removal has been synced locally.', uLibSyncGroupData.name, 20)
         end
     else
         local uLibSyncGroupAllow = ULib.parseKeyValues(uLibSyncGroupData.allow)
         if not uLibGroupData then
             ULib.ucl.addGroup(uLibSyncGroupData.name, uLibSyncGroupAllow, uLibSyncGroupData['inherit_from'])
             ULib.ucl.setGroupCanTarget(uLibGroupName, uLibSyncGroupData['can_target'])
-            ULibSync.log('Group has been synced locally.', uLibSyncGroupData.name, 20)     
-        else 
+            ULibSync.log('Group has been synced locally.', uLibSyncGroupData.name, 20)
+        else
            syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLibSyncGroupAllow, uLibSyncGroupData)
         end
     end
