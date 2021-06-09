@@ -186,7 +186,7 @@ syncULibSyncPlayerBanData(steamID64)
 ### Users
 
 ```lua
-initUserSync()
+initUsersSync()
 -- Initalizes user syncing. This is currently called on a successful database connection.
 
 syncULibUsers()
@@ -213,7 +213,7 @@ syncULibSyncUser(ply)
 When a group is renamed or deleted, all users with the renamed or deleted group will have their group automatcially updated. If one of your servers is behind on the group changes, a warning may appear that you are attempting to sync a user with a group that doesn't exist yet. Syncing groups locally on the server behind on changes may fix.
 
 ```lua
-initBanSync()
+initGroupsSync()
 -- Initalizes group syncing. This is currently called on a successful database connection.
 
 syncULibGroups()
