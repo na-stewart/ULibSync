@@ -154,7 +154,7 @@ SINCE MYSQLOO USES HOOKS FOR SQL QUERY CALLBACKS, EXECUTING GET COMMANDS VIA SER
 
 ## Documentation
 
-All ULibSync's functions are kept in the table "ULibSync" to prevent conflicts.
+All ULibSync functions are kept in the table "ULibSync" to prevent conflicts.
 
 Data that is classified as ULibSync data (ex: ULibSyncBanData) is contained on the database.
 
