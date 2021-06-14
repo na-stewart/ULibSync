@@ -95,11 +95,11 @@ https://github.com/sunset-developer/ulibsync
 ```
 * Install addon from the steam workshop.
 
-(Coming soon)
+https://steamcommunity.com/sharedfiles/filedetails/?id=2511974758
 
 ## Usage
 
-ULibSync was designed to be incredibly easy to configure and use. All changes made to ULib data via ULX are automatically synced. Data associated to a player, a ban for example, is automatically synced locally on join. You can simply configure and forget.
+ULibSync was designed to be incredibly easy to configure and use. All changes made to ULib data are automatically synced. Data associated to a player, a ban for example, is automatically synced locally on join. You can simply configure and forget.
 
 ### Initial Setup
 
@@ -131,7 +131,9 @@ Sync commands really only needed to be executed when local data has not been syn
 
 Keep in mind that data associated to a player is synced when they join. However, if you want to retrieve all synced data at once, you would use a get command. 
 
-Groups, by default, are set to not sync when the server initializes (map change or server startup). You must retrieve group data manually via command unless you set syncGroupsOnInit to true in the config.
+Groups, by default, are set to not sync changes locally when the server initializes (map change or server startup). You must retrieve group data manually via command unless you set syncGroupsOnInit to true in the config.
+
+SINCE MYSQLOO USES HOOKS FOR SQL QUERY CALLBACKS, EXECUTING GET COMMANDS VIA SERVER TERMINAL WONT WORK IF THE SERVER IS EMPTY.
 
 `!syncbans`: Syncs bans to the database.
 
@@ -186,7 +188,7 @@ syncULibSyncPlayerBanData(steamID64)
 ### Users
 
 ```lua
-initUserSync()
+initUsersSync()
 -- Initalizes user syncing. This is currently called on a successful database connection.
 
 syncULibUsers()
@@ -213,7 +215,7 @@ syncULibSyncUser(ply)
 When a group is renamed or deleted, all users with the renamed or deleted group will have their group automatcially updated. If one of your servers is behind on the group changes, a warning may appear that you are attempting to sync a user with a group that doesn't exist yet. Syncing groups locally on the server behind on changes may fix.
 
 ```lua
-initBanSync()
+initGroupsSync()
 -- Initalizes group syncing. This is currently called on a successful database connection.
 
 syncULibGroups()
