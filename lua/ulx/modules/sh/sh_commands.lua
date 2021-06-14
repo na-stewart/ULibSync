@@ -1,5 +1,5 @@
 function ulx.syncBans(calling_ply)
-    ULibSync.syncULibPlayerBans()
+    ULibSync.syncULibBans()
     ulx.fancyLogAdmin(calling_ply, "#A synced bans.")
 end
 local syncBans = ulx.command("ULibSync", "ulx syncbans", ulx.syncBans, "!syncbans")
@@ -47,7 +47,7 @@ getGroups:defaultAccess(ULib.ACCESS_ADMIN)
 getGroups:help("Retreives groups from the ULibSync database.")
 
 function ulx.syncAll(calling_ply)
-    ULibSync.syncULibPlayerBans()
+    ULibSync.syncULibBans()
     ULibSync.syncULibUsers()
     ULibSync.syncULibGroups()
     ulx.fancyLogAdmin(calling_ply, "#A synced ban data, users, and groups.")

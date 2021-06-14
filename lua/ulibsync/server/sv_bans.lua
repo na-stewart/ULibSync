@@ -1,7 +1,7 @@
 local function createULibSyncBanDataTable()
     local q = ULibSync.mysql:query('CREATE TABLE IF NOT EXISTS `ulib_bans` (' ..
     '`id` INT AUTO_INCREMENT PRIMARY KEY,' ..
-    '`steamid` VARCHAR(18) UNIQUE NOT NULL,' ..
+    '`steamid` VARCHAR(19) UNIQUE NOT NULL,' ..
     '`reason` TINYTEXT,' ..
     '`unban` VARCHAR(12) NOT NULL,' ..
     '`manual_unban` BOOLEAN NOT NULL DEFAULT FALSE,' ..
@@ -33,7 +33,7 @@ function ULibSync.initBanSync()
     addULibSyncPlayerBanHooks()
 end
 
-function ULibSync.syncULibPlayerBans()
+function ULibSync.syncULibBans()
     for steamid, banData in pairs(ULib.bans) do
         ULibSync.syncULibPlayerBan(steamid, banData)
     end

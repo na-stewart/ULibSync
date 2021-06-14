@@ -167,7 +167,7 @@ If a player has been unbanned on server A, it will be synced when they connect t
 initBanSync()
 -- Initalizes ban syncing. This is currently called on a successful database connection.
 
-syncULibPlayerBans()
+syncULibBans()
 -- Syncs all local ULib bans to the database.
 
 syncULibPlayerBan(steamid, banData)

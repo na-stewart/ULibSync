@@ -1,7 +1,7 @@
 local function createULibSyncUsersTable()
     local q = ULibSync.mysql:query('CREATE TABLE IF NOT EXISTS `ulib_users` (' ..
     '`id` INT AUTO_INCREMENT PRIMARY KEY,' ..
-    '`steamid` VARCHAR(18) UNIQUE NOT NULL,' ..
+    '`steamid` VARCHAR(19) UNIQUE NOT NULL,' ..
     '`removed` BOOLEAN NOT NULL DEFAULT FALSE,' ..
     '`group` VARCHAR(20),' ..
     '`date_created` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),' ..
