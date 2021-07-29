@@ -1,6 +1,6 @@
 -- Sync On Event Settings
 ULibSync.syncBanDataOnJoin = true
-ULibSync.syncUsersOnJoin = true
+ULibSync.syncUserOnJoin = true
 ULibSync.syncGroupsOnInit = false
 
 -- Logging Settings
