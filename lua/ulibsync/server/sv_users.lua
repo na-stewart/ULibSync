@@ -130,4 +130,4 @@ function ULibSync.syncULibSyncUser(ply)
     end
     q:start()
 end
-if ULibSync.syncUsersOnJoin then hook.Add('ULibLocalPlayerReady', 'ULibSyncUserGroupCheck', ULibSync.syncULibSyncUser) end
+if ULibSync.syncUserOnJoin then hook.Add('ULibLocalPlayerReady', 'ULibSyncUserGroupCheck', ULibSync.syncULibSyncUser) end
