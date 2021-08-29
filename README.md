@@ -106,7 +106,7 @@ Once ULibSync has been added onto your Gmod server, you have to find the configu
 
 ```lua
 -- Sync On Event Settings
-ULibSync.syncBanDataOnJoin = true
+ULibSync.syncPlayerBanDataOnJoin = true
 ULibSync.syncUserOnJoin = true
 ULibSync.syncGroupsOnInit = false
 
