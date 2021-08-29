@@ -1,5 +1,5 @@
 -- Sync On Event Settings
-ULibSync.syncBanDataOnJoin = true
+ULibSync.syncPlayerBanDataOnJoin = true
 ULibSync.syncUserOnJoin = true
 ULibSync.syncGroupsOnInit = false
 

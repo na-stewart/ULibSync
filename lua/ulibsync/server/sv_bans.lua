@@ -126,4 +126,4 @@ function ULibSync.syncULibSyncPlayerBanData(steamID64)
     q:start()
     q:wait()
 end
-if ULibSync.syncBanDataOnJoin then hook.Add('CheckPassword', 'ULibSyncPlayerBanCheck', ULibSync.syncULibSyncPlayerBanData) end
+if ULibSync.syncPlayerBanDataOnJoin then hook.Add('CheckPassword', 'ULibSyncPlayerBanCheck', ULibSync.syncULibSyncPlayerBanData) end
