@@ -162,7 +162,7 @@ Data that is classified as ULib data (ex: ULibPlayerBan) is contained locally.
 
 ### Bans
 
-If a player has been unbanned on server A, it will be synced when they connect to server B. However this player may not be able to join until a map change or server restart. Continually attempting to rejoin may fix this. This issue does not appear to be fixable on my end as it's a ULib related problem.
+If a player has been unbanned on server A, it will be synced when they connect to server B. However, it may be possible that this player may not be able to join until a map change or server restart.
 
 ```lua
 initBanSync()
