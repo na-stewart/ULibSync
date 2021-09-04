@@ -80,7 +80,7 @@ function ULibSync.syncULibUsersGroupChanged(oldGroup, newGroup)
 end
 
 local function syncULibSyncUserLocally(steamid, uLibSyncUser)
-    if uLibSyncUser['removed'] == 0 then
+    if uLibSyncUser.removed == 0 then
         if not ULib.ucl.users[steamid] or ULib.ucl.users[steamid].group ~= uLibSyncUser.group then
             local success, result = pcall(ULib.ucl.addUser, steamid, nil, nil, uLibSyncUser.group, nil)
             if success then
