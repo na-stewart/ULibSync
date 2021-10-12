@@ -132,7 +132,7 @@ Keep in mind that data associated to a player is synced when they join. However,
 
 Groups, by default, are set to not sync changes locally when the server initializes (map change or server startup). You must retrieve group data manually via command unless you set syncGroupsOnInit to true in the config.
 
-SINCE MYSQLOO USES HOOKS FOR SQL QUERY CALLBACKS, EXECUTING GET COMMANDS VIA SERVER TERMINAL WONT WORK IF THE SERVER IS EMPTY.
+SINCE MYSQLOO USES HOOKS FOR SQL QUERY CALLBACKS, EXECUTING GET COMMANDS VIA SERVER TERMINAL WON'T WORK IF THE SERVER IS EMPTY.
 
 `!syncbans`: Syncs bans to the database.
 
