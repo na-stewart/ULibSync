@@ -54,6 +54,7 @@
    * [Bans](#bans)
    * [Groups](#groups)
    * [Users](#users)
+   * [Logging](#logging)
 * [Contributing](#contributing)
 * [License](#license)
 
@@ -236,17 +237,13 @@ syncULibSyncGroups()
 -- Syncs ULibSync groups locally.
 ```
 
-### Misc
+### Logging
 
 ```lua
-checkTableForChangedValues(originalTable, updatedTable)
--- Crosschecks original table with an updated table and returns the values that are different.
-
 log(msg, id, level, err)
 -- Used to log ULibSync activities. err is optional and only used when the log level is a warning or above.
 -- 10: DEBUG | 20: INFO | 30: WARNING | 40: ERROR | 50: CRITICAL
 ```
-
  
 <!-- CONTRIBUTING -->
 ## Contributing

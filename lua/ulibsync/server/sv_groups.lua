@@ -136,9 +136,19 @@ function ULibSync.syncULibGroupChanged(groupName, dataName, newData)
     q:start()
 end
 
+local function checkTableForChangedValues(originalTable, updatedTable)
+    local valuesChanged = {}
+    for key, value in pairs(updatedTable) do
+       if originalTable[key] ~= value or not originalTable[key] then
+          valuesChanged[key] = value
+       end
+    end
+    return valuesChanged
+ end
+
 local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLibSyncGroupAllow, uLibSyncGroupData)
-    local addedGroupPermissions = ULibSync.checkTableForChangedValues(uLibSyncGroupAllow, uLibGroupData.allow)
-    local removedGroupPermissions = ULibSync.checkTableForChangedValues(uLibGroupData.allow, uLibSyncGroupAllow)
+    local addedGroupPermissions = checkTableForChangedValues(uLibSyncGroupAllow, uLibGroupData.allow)
+    local removedGroupPermissions = checkTableForChangedValues(uLibGroupData.allow, uLibSyncGroupAllow)
     if uLibGroupData['inherit_from'] ~= uLibSyncGroupData['inherit_from'] then
         ULib.ucl.setGroupInheritance(uLibGroupName, uLibSyncGroupData['inherit_from'])
         ULibSync.log(string.format('Group inherit_from %s has been synced locally.', uLibSyncGroupData['inherit_from']), uLibSyncGroupData.name, 20)
