@@ -85,19 +85,6 @@ function ULibSync.syncULibGroupRemoved(groupName, oldGroup)
     q:start()
 end
 
-local function deleteGroupRenamedToDuplicateGroup(groupName)
-    ULibSync.log('Attemping to delete group renamed to duplicate group.', groupName, 10)
-    local q = ULibSync.mysql:prepare('DELETE FROM `ulib_groups` WHERE name = ?')
-    q:setString(1, groupName)
-    function q:onSuccess(data)
-        ULibSync.log('Group renamed to duplicate group has been deleted.', groupName, 10)
-    end
-    function q:onError(err)
-        ULibSync.log('Group renamed to duplicate group has not been deleted.', groupName, 40)
-    end
-    q:start()
-end
-
 function ULibSync.syncULibGroupRenamed(oldName, newName)
     ULibSync.log('Attemping to sync group renamed.', newName, 10)
     local q = ULibSync.mysql:prepare('UPDATE ulib_groups SET old_name = ?, name = ? WHERE name = ? AND removed = ?')
@@ -112,8 +99,6 @@ function ULibSync.syncULibGroupRenamed(oldName, newName)
     function q:onError(err)
         if string.find(err, 'Duplicate entry') then
             ULibSync.syncULibGroup(newName, ULib.ucl.groups[newName])
-            ULibSync.syncULibUsersGroupChanged(oldName, newName)
-            deleteGroupRenamedToDuplicateGroup(oldName)
         else
             ULibSync.log('Group rename has not been synced.', newName, 40, err)
         end
@@ -151,11 +136,11 @@ local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLi
     local removedGroupPermissions = checkTableForChangedValues(uLibGroupData.allow, uLibSyncGroupAllow)
     if uLibGroupData['inherit_from'] ~= uLibSyncGroupData['inherit_from'] then
         ULib.ucl.setGroupInheritance(uLibGroupName, uLibSyncGroupData['inherit_from'])
-        ULibSync.log(string.format('Group inherit_from %s has been synced locally.', uLibSyncGroupData['inherit_from']), uLibSyncGroupData.name, 20)
-    end
+        ULibSync.log(string.format('Group inherit %s has been synced locally.', uLibSyncGroupData['inherit_from']), uLibSyncGroupData.name, 20)
+    ends
     if uLibGroupData['can_target'] ~= uLibSyncGroupData['can_target'] then
         ULib.ucl.setGroupCanTarget(uLibGroupName, uLibSyncGroupData['can_target'])
-        ULibSync.log('Group can_target has been synced locally.', uLibSyncGroupData.name, 20)
+        ULibSync.log('Group target has been synced locally.', uLibSyncGroupData.name, 20)
     end
     if next(addedGroupPermissions) or next(removedGroupPermissions)then
         ULib.ucl.groupAllow(uLibGroupName, addedGroupPermissions, true)
