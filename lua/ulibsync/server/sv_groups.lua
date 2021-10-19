@@ -137,7 +137,7 @@ local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLi
     if uLibGroupData['inherit_from'] ~= uLibSyncGroupData['inherit_from'] then
         ULib.ucl.setGroupInheritance(uLibGroupName, uLibSyncGroupData['inherit_from'])
         ULibSync.log(string.format('Group inherit %s has been synced locally.', uLibSyncGroupData['inherit_from']), uLibSyncGroupData.name, 20)
-    ends
+    end
     if uLibGroupData['can_target'] ~= uLibSyncGroupData['can_target'] then
         ULib.ucl.setGroupCanTarget(uLibGroupName, uLibSyncGroupData['can_target'])
         ULibSync.log('Group target has been synced locally.', uLibSyncGroupData.name, 20)
