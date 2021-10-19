@@ -142,7 +142,7 @@ local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLi
         ULib.ucl.setGroupCanTarget(uLibGroupName, uLibSyncGroupData['can_target'])
         ULibSync.log('Group target has been synced locally.', uLibSyncGroupData.name, 20)
     end
-    if next(addedGroupPermissions) or next(removedGroupPermissions)then
+    if next(addedGroupPermissions) or next(removedGroupPermissions) then
         ULib.ucl.groupAllow(uLibGroupName, addedGroupPermissions, true)
         ULib.ucl.groupAllow(uLibGroupName, removedGroupPermissions, false)
         ULibSync.log('Group allow has been synced locally.', uLibSyncGroupData.name, 20)
