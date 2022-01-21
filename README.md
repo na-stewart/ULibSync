@@ -127,7 +127,7 @@ ULibSync.port = 3306
 
 All of these commands don't need to be executed very often.
 
-Sync commands really only needed to be executed when local data has not been synced onto the database yet. 
+Sync commands really only need to be executed when local data has not been synced onto the database yet. 
 
 Keep in mind that data associated to a player is synced when they join. However, if you want to retrieve all synced data at once, you would use a get command. 
 
