@@ -131,7 +131,7 @@ Sync commands really only need to be executed when local data has not been synce
 
 Keep in mind that data associated to a player is synced when they join. However, if you want to retrieve all synced data at once, you would use a get command. 
 
-Groups, by default, are set to not sync changes locally when the server initializes (map change or server startup). You must retrieve group data manually via command unless you set syncGroupsOnInit to true in the config.
+Groups, by default, are set to not sync changes locally when the server initializes (map change or server startup). You must retrieve group data manually via command unless you set `syncGroupsOnInit` to true in the config.
 
 SINCE MYSQLOO USES HOOKS FOR SQL QUERY CALLBACKS, EXECUTING GET COMMANDS VIA SERVER TERMINAL WON'T WORK IF THE SERVER IS EMPTY.
 
