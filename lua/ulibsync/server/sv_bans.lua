@@ -73,7 +73,7 @@ end
 
 local function syncULibSyncPlayerBanDataLocally(steamid, uLibSyncPlayerBanData)
     local seconds = tonumber(uLibSyncPlayerBanData.unban)
-    local uLibSyncTimeRemainding = (seconds > 0) and (seconds - os.time()) / 60 or 0
+    local uLibSyncTimeRemaining = (seconds > 0) and (seconds - os.time()) / 60 or 0
     if uLibSyncPlayerBanData['manual_unban'] == 1 then
         if ULib.bans[steamid] then
             ULib.unban(steamid)
