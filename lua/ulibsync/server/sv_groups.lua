@@ -122,13 +122,13 @@ function ULibSync.syncULibGroupChanged(groupName, dataName, newData)
 end
 
 local function findUpdatedValues(originalTable, updatedTable)
-    local valuesChanged = {}
+    local updatedValues = {}
     for key, value in pairs(updatedTable) do
        if originalTable[key] ~= value or not originalTable[key] then
-          valuesChanged[key] = value
+          updatedValues[key] = value
        end
     end
-    return valuesChanged
+    return updatedValues
  end
 
 local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLibSyncGroupAllow, uLibSyncGroupData)
