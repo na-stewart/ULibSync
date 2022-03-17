@@ -18,6 +18,6 @@ end
 
 function ULibSync.log(msg, id, level, err)
     if not ULibSync.logs or level == 10 and not ULibSync.debug then return end
-    local unformatted  = (level > 20) and '[ULibSync] (%s) %s: %s %s\n' or '[ULibSync] (%s) %s: %s\n'
+    local unformatted  = (level > 20) and '[ULibSync] (%s) %s: %s %s.\n' or '[ULibSync] (%s) %s: %s\n'
     ServerLog(string.format(unformatted, id,  parse_log_level(level), msg, err))
 end
