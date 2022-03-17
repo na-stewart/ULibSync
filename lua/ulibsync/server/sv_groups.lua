@@ -136,7 +136,7 @@ local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLi
     local removedGroupPermissions = findUpdatedValues(uLibGroupData.allow, uLibSyncGroupAllow)
     if uLibGroupData['inherit_from'] ~= uLibSyncGroupData['inherit_from'] then
         ULib.ucl.setGroupInheritance(uLibGroupName, uLibSyncGroupData['inherit_from'])
-        ULibSync.log(string.format('Group inherit %s has been synced locally.', uLibSyncGroupData['inherit_from']), uLibSyncGroupData.name, 20)
+        ULibSync.log('Group inherit has been synced locally.', uLibSyncGroupData.name, 20)
     end
     if uLibGroupData['can_target'] ~= uLibSyncGroupData['can_target'] then
         ULib.ucl.setGroupCanTarget(uLibGroupName, uLibSyncGroupData['can_target'])
