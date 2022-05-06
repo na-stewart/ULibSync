@@ -237,14 +237,7 @@ syncULibSyncGroups()
 -- Syncs ULibSync groups locally.
 ```
 
-### Logging
 
-```lua
-log(msg, id, level, err)
--- Used to log ULibSync activities. err is optional and only used when the log level is a warning or above.
--- 10: DEBUG | 20: INFO | 30: WARNING | 40: ERROR | 50: CRITICAL
-```
- 
 <!-- CONTRIBUTING -->
 ## Contributing
 
