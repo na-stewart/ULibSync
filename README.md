@@ -54,7 +54,6 @@
    * [Bans](#bans)
    * [Groups](#groups)
    * [Users](#users)
-   * [Logging](#logging)
 * [Contributing](#contributing)
 * [License](#license)
 
