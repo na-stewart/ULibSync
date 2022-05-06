@@ -142,10 +142,13 @@ local function syncULibSyncGroupChangesLocally(uLibGroupName, uLibGroupData, uLi
         ULib.ucl.setGroupCanTarget(uLibGroupName, uLibSyncGroupData['can_target'])
         ULibSync.log('Group target has been synced locally.', uLibSyncGroupData.name, 20)
     end
-    if next(addedGroupPermissions) or next(removedGroupPermissions) then
+    if next(addedGroupPermissions) then
         ULib.ucl.groupAllow(uLibGroupName, addedGroupPermissions, true)
+        ULibSync.log('Added group permissions synced locally.', uLibSyncGroupData.name, 20)
+    end
+    if next(removedGroupPermissions) then
         ULib.ucl.groupAllow(uLibGroupName, removedGroupPermissions, false)
-        ULibSync.log('Group allow has been synced locally.', uLibSyncGroupData.name, 20)
+        ULibSync.log('Removed group permissions synced locally.', uLibSyncGroupData.name, 20)
     end
     if uLibGroupName ~= uLibSyncGroupData.name then
         ULib.ucl.renameGroup(uLibGroupName, uLibSyncGroupData.name)
@@ -179,6 +182,7 @@ function ULibSync.syncULibSyncGroups()
     local q = ULibSync.mysql:prepare('SELECT name, old_name, inherit_from, allow, removed, can_target, removed FROM ulib_groups')
     function q:onSuccess(data)
         removeULibSyncGroupsHooks()
+        -- TODO Sort ULibSync group data based off of inherit_from to prevent error.
         for index, uLibSyncGroupData in pairs(data) do
             syncULibSyncGroupLocally(uLibSyncGroupData)
         end
