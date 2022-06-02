@@ -18,12 +18,6 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -124,7 +118,7 @@ ULibSync.port = 3306
 
 ### Commands
 
-On setup, it is reccomended you execute the `!syncall` command in order to sync all local ULib data to your database. 
+On setup, it is reccomended you execute the `!syncall` command to sync existing local ULib data to your database. 
 
 SINCE MYSQLOO USES HOOKS FOR SQL QUERY CALLBACKS, EXECUTING GET COMMANDS VIA SERVER TERMINAL WON'T WORK IF THE SERVER IS EMPTY.
 
@@ -247,20 +241,3 @@ Contributions are what make the open source community such an amazing place to b
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/sunset-developer/ulibsync.svg?style=flat-square
-[contributors-url]: https://github.com/sunset-developer/ulibsync/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/sunset-developer/ulibsync.svg?style=flat-square
-[forks-url]: https://github.com/sunset-developer/ulibsync/network/members
-[stars-shield]: https://img.shields.io/github/stars/sunset-developer/ulibsync.svg?style=flat-square
-[stars-url]: https://github.com/sunset-developer/ulibsync/stargazers
-[issues-shield]: https://img.shields.io/github/issues/sunset-developer/ulibsync.svg?style=flat-square
-[issues-url]: https://github.com/sunset-developer/ulibsync/issues
-[license-shield]: https://img.shields.io/github/license/sunset-developer/ulibsync.svg?style=flat-square
-[license-url]: https://github.com/sunset-developer/ulibsync/blob/master/LICENSE
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/github_username
-[product-screenshot]: images/screenshot.png
