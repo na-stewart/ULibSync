@@ -47,7 +47,7 @@ function ULibSync.syncULibPlayerBan(steamid, banData)
     q:setString(5, GetHostName())
     if banData.reason then q:setString(2, banData.reason) end
     if banData.admin then q:setString(6, banData.admin) end
-    if banData.name  then q:setString(4, banData.name) end
+    if banData.name then q:setString(4, banData.name) end
     function q:onSuccess(data)
         ULibSync.log('Ban has been synced successfully.', steamid, 20)
     end
