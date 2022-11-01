@@ -96,7 +96,7 @@ ULibSync was designed to be incredibly easy to configure and use. All changes ma
 
 ### Initial Setup
 
-Once ULibSync has been added onto your Gmod server, you may find the configuation file at /lua/ulibsync/server/sv_config.lua. Now you may configure ULibSync to your preferred preferences. Below is an example of it's contents:
+Once ULibSync has been added onto your Gmod server, you may find the configuation file at `/lua/ulibsync/server/sv_config.lua`. Now you may configure ULibSync to your preferred preferences. Below is an example of it's contents:
 
 ```lua
 -- Sync On Event Settings
