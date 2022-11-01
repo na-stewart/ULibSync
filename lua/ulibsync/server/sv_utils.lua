@@ -30,7 +30,7 @@ local function initMySQLOO()
         ULibSync.initBanSync()
         ULibSync.initUsersSync()
         ULibSync.initGroupsSync()
-        ULibSync.log('Connection to database succeeded.', ULibSync.ip, 20)
+        ULibSync.log('Connection to database succeeded, please check workshop for updates.', ULibSync.ip, 20)
     end
     function ULibSync.mysql:onConnectionFailed(err)
         ULibSync.log('Connection to database failed.', ULibSync.ip, 50, err)
