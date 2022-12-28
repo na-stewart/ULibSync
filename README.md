@@ -92,7 +92,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2511974758
 
 ## Usage
 
-ULibSync was designed to be incredibly easy to configure and use. All changes made to ULib data are automatically synced. Data associated to a player, a ban for example, is automatically synced locally on join. You can simply configure and forget.
+ULibSync was designed to be incredibly easy to configure and use. All changes made to ULib data (via commands) are automatically synced. Data associated to a player, a ban for example, is automatically synced locally on join. You can simply configure and forget.
 
 ### Initial Setup
 
