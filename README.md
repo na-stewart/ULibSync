@@ -118,7 +118,7 @@ ULibSync.port = 3306
 
 ### Commands
 
-On setup, it is reccomended you execute the `!syncall` command to sync existing local ULib data to your database. 
+On setup, it is recommended you execute the `!syncall` command to sync existing local ULib data to your database. 
 
 SINCE MYSQLOO USES HOOKS FOR SQL QUERY CALLBACKS, EXECUTING GET COMMANDS VIA SERVER TERMINAL WON'T WORK IF THE SERVER IS EMPTY.
 
