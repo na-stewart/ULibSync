@@ -48,8 +48,8 @@ getGroups:help("Retreives groups from the ULibSync database.")
 
 function ulx.syncAll(calling_ply)
     ULibSync.syncULibBans()
-    ULibSync.syncULibGroups()
     ULibSync.syncULibUsers()
+    ULibSync.syncULibGroups()
     ulx.fancyLogAdmin(calling_ply, "#A synced ban data, users, and groups.")
 end
 local syncAll = ulx.command("ULibSync", "ulx syncall", ulx.syncAll, "!syncall")
