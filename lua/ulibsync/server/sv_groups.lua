@@ -48,9 +48,16 @@ function ULibSync.initGroupsSync()
 end
 
 function ULibSync.syncULibGroups()
+    local rows = {}
     for groupName, groupData in pairs(ULib.ucl.groups) do
-        ULibSync.syncULibGroup(groupName, groupData)
+        rows[#rows + 1] = string.format('(%s,%s,%s,%s)',
+            ULibSync.escape(groupName),
+            ULibSync.escape(groupData.allow and ULib.makeKeyValues(groupData.allow)),
+            ULibSync.escape(groupData['inherit_from']),
+            ULibSync.escape(groupData['can_target']))
     end
+    ULibSync.log(string.format('Attemping to sync %d groups.', #rows), 'groups', 10)
+    ULibSync.batchReplace('ulib_groups', '`name`, `allow`, `inherit_from`, `can_target`', rows, 'groups', 'Groups')
 end
 
 function ULibSync.syncULibGroup(groupName, groupData)
@@ -76,7 +83,7 @@ function ULibSync.syncULibGroupRemoved(groupName, oldGroup)
     q:setString(2, groupName)
     q:setBoolean(3, false)
     function q:onSuccess(data)
-        ULibSync.syncULibUsersGroupChanged(groupName, oldGroup['inherit_from'])
+        if oldGroup then ULibSync.syncULibUsersGroupChanged(groupName, oldGroup['inherit_from']) end
         ULibSync.log('Group removal has been synced successfully.', groupName, 20)
     end
     function q:onError(err)
@@ -124,7 +131,7 @@ end
 local function findUpdatedValues(originalTable, updatedTable)
     local updatedValues = {}
     for key, value in pairs(updatedTable) do
-       if originalTable[key] ~= value or not originalTable[key] then
+       if originalTable[key] ~= value then
           updatedValues[key] = value
        end
     end
@@ -177,19 +184,36 @@ local function syncULibSyncGroupLocally(uLibSyncGroupData)
     end
 end
 
-function ULibSync.syncULibSyncGroups()
+-- Orders groups so a group is always synced after the group it inherits from.
+local function sortByInheritance(data)
+    local byName, sorted, visited = {}, {}, {}
+    for index = 1, #data do byName[data[index].name] = data[index] end
+    local function visit(uLibSyncGroupData)
+        if visited[uLibSyncGroupData.name] then return end
+        visited[uLibSyncGroupData.name] = true
+        local parent = byName[uLibSyncGroupData['inherit_from']]
+        if parent then visit(parent) end
+        sorted[#sorted + 1] = uLibSyncGroupData
+    end
+    for index = 1, #data do visit(data[index]) end
+    return sorted
+end
+
+function ULibSync.syncULibSyncGroups(onDone)
     ULibSync.log('Attemping to sync locally.', 'groups', 10)
-    local q = ULibSync.mysql:prepare('SELECT name, old_name, inherit_from, allow, removed, can_target, removed FROM ulib_groups')
+    local q = ULibSync.mysql:query('SELECT name, old_name, inherit_from, allow, removed, can_target FROM ulib_groups')
     function q:onSuccess(data)
         removeULibSyncGroupsHooks()
-        -- TODO Sort ULibSync group data based off of inherit_from to prevent error.
-        for index, uLibSyncGroupData in pairs(data) do
-            syncULibSyncGroupLocally(uLibSyncGroupData)
+        local sorted = sortByInheritance(data)
+        for index = 1, #sorted do
+            syncULibSyncGroupLocally(sorted[index])
         end
         addULibSyncGroupsHooks()
+        if onDone then onDone() end
     end
     function q:onError(err)
         ULibSync.log('Local syncing failed.', 'groups', 40, err)
+        if onDone then onDone() end
     end
-     q:start()
+    q:start()
 end

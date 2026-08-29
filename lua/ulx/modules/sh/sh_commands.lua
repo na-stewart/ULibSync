@@ -58,8 +58,7 @@ syncAll:help("Syncs all ULib data to the ULibSync database.")
 
 function ulx.getAll(calling_ply)
     ULibSync.syncULibSyncBanData()
-    ULibSync.syncULibSyncGroups()
-    ULibSync.syncULibSyncUsers()
+    ULibSync.syncULibSyncGroups(ULibSync.syncULibSyncUsers)
     ulx.fancyLogAdmin(calling_ply, "#A retreived ban data, users, and groups.")
 end
 local getAll = ulx.command("ULibSync", "ulx getall", ulx.getAll, "!getall")

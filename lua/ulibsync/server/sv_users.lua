@@ -29,12 +29,18 @@ function ULibSync.initUsersSync()
     ULibSync.log('Initializing sync.', 'users', 10)
     createULibSyncUsersTable()
     addULibSyncUsersHooks()
+    if ULibSync.syncUserOnJoin then
+        hook.Add('ULibLocalPlayerReady', 'ULibSyncUserGroupCheck', ULibSync.syncULibSyncUser)
+    end
 end
 
 function ULibSync.syncULibUsers()
+    local rows = {}
     for steamid, userData in pairs(ULib.ucl.users) do
-       ULibSync.syncULibUser(steamid, userData['group'])
+        rows[#rows + 1] = string.format('(%s,%s)', ULibSync.escape(steamid), ULibSync.escape(userData['group']))
     end
+    ULibSync.log(string.format('Attemping to sync %d users.', #rows), 'users', 10)
+    ULibSync.batchReplace('ulib_users', '`steamid`, `group`', rows, 'users', 'Users')
 end
 
 function ULibSync.syncULibUser(steamid, group)
@@ -96,18 +102,21 @@ local function syncULibSyncUserLocally(steamid, uLibSyncUser)
     end       
 end
 
-function ULibSync.syncULibSyncUsers()
+function ULibSync.syncULibSyncUsers(onDone)
     ULibSync.log('Attemping to sync locally.', 'users', 10)
-    local q = ULibSync.mysql:prepare('SELECT `group`, removed, steamid FROM ulib_users')
-    function q:onSuccess(data)   
+    local q = ULibSync.mysql:query('SELECT `group`, removed, steamid FROM ulib_users')
+    function q:onSuccess(data)
         removeULibSyncUsersHooks()
-        for index, uLibSyncUser in pairs(data) do
+        for index = 1, #data do
+            local uLibSyncUser = data[index]
             syncULibSyncUserLocally(uLibSyncUser.steamid, uLibSyncUser)
         end
         addULibSyncUsersHooks()
+        if onDone then onDone() end
     end
     function q:onError(err)
         ULibSync.log('Local syncing failed.', 'users', 40, err)
+        if onDone then onDone() end
     end
     q:start()
 end
@@ -130,4 +139,3 @@ function ULibSync.syncULibSyncUser(ply)
     end
     q:start()
 end
-if ULibSync.syncUserOnJoin then hook.Add('ULibLocalPlayerReady', 'ULibSyncUserGroupCheck', ULibSync.syncULibSyncUser) end
