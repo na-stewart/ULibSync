@@ -120,6 +120,5 @@ function ULibSync.syncULibSyncPlayerBanData(steamID64)
         ULibSync.log('Ban has not been synced locally.', steamid, 40, err)
     end
     q:start()
-    q:wait()
 end
 if ULibSync.syncPlayerBanDataOnJoin then hook.Add('CheckPassword', 'ULibSyncPlayerBanCheck', ULibSync.syncULibSyncPlayerBanData) end
